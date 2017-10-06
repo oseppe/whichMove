@@ -3,6 +3,7 @@
 <head>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="main.css">
 	<title>Which Move</title>
 </head>
 <body>
@@ -12,7 +13,7 @@
 	<main>
 		<div class=row>
 			<div id="chat-screen" class="s12 m12 l12 teal">
-				a
+				
 			</div>
 		</div>
 		<div class="row valign-wrapper">
@@ -35,9 +36,22 @@
   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript">
+		'use strict';
+
+		const createEntryForChatScreen = (message) => {
+			let entry = document.createElement("p");
+
+			entry.innerHTML = message;
+
+			return entry;
+		}
+
 		const sendChat = () => {
+			let chatScreen = document.getElementById('chat-screen');
 			let chatBox = document.getElementById('chat-input');
 			let message = chatBox.value;
+
+			chatScreen.appendChild(createEntryForChatScreen(message));
 
 			chatBox.value = '';
 
@@ -52,7 +66,7 @@
 
 		// Register events
 		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
-		
+
 		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
 
 	</script>
