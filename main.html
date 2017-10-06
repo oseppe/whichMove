@@ -76,6 +76,20 @@
 			}
 		};
 
+		const runner = {
+			run: function(times = 1) {
+				for (var i = 0; i < times; i++) {
+					let stringifiedMove = movesGenerator.getMoveString();
+
+					showMessageInChatBox(stringifiedMove);
+				}
+			},
+
+			// delayShow: function(message) {
+			// 	window.setTimeout(showMessageInChatBox(message), 3000);
+			// }
+		}
+
 		const createEntryForChatScreen = (message) => {
 			let entry = document.createElement("p");
 
@@ -88,7 +102,7 @@
 			let chatScreen = document.getElementById('chat-screen');
 			
 			chatScreen.appendChild(createEntryForChatScreen(message));
-			console.log(message);
+			// console.log(message);
 		}
 
 		const sendChatUsingEnterKey = (event) => {
