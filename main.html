@@ -16,7 +16,19 @@
 				
 			</div>
 		</div>
+		<!-- Run interface -->
 		<div class="row valign-wrapper">
+			<div id="container-runner-input" class="col s12 m10 l10">
+				<input id="runner-input" type="text" name="" placeholder="Run how many times?">
+			</div>
+			<div id="container-runner-send-btn" class="col m2 l2 hide-on-small-only">
+				<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">Run
+    			<i class="material-icons right">send</i>
+  			</button>
+			</div>
+		</div>
+		<!-- Chat Interface -->
+		<div class="row valign-wrapper" style="display: none;">
 			<div id="container-chat-input" class="col s12 m10 l10">
 				<input id="chat-input" type="text" name="" placeholder="type in command">
 			</div>
@@ -119,11 +131,30 @@
 			chatBox.value = '';
 		}
 
-		// Register events
-		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
+		const runRunner = () => {
+			let input = document.getElementById('runner-input')
+			// TODO: add validator
+			let times = +(input.value);
 
+			input.value = "";
+
+			runner.run(times);
+		}
+
+		const runRunnerUsingEnterKey = (event) => {
+			if(event.keyCode == 13) {
+				runRunner();
+			}	
+		}
+
+		// Register events
+		// Chat related events
+		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
 		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
 
+		// Runner related events
+		document.getElementById('runner-run-btn').addEventListener('click', runRunner);
+		document.getElementById('runner-input').addEventListener('keypress', runRunnerUsingEnterKey);
 	</script>
 </body>
 </html>
