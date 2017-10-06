@@ -18,7 +18,7 @@
 		</div>
 		<div class="row valign-wrapper">
 			<div id="container-chat-input" class="col s12 m10 l10">
-				<input id="chat-input" type="text" name="">
+				<input id="chat-input" type="text" name="" placeholder="type in command">
 			</div>
 			<div id="container-chat-send-btn" class="col m2 l2 hide-on-small-only">
 				<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">Send
@@ -38,6 +38,44 @@
 	<script type="text/javascript">
 		'use strict';
 
+		const movesGenerator = {
+			stringify: function(move) {
+				let stringifiedMove = "";
+
+				switch(move) {
+					case -2:
+						stringifiedMove = "Down";
+						break;
+					case -1:
+						stringifiedMove = "Left";
+						break;
+					case 0:
+						stringifiedMove = "Stay";
+						break;
+					case 1:
+						stringifiedMove = "Right";
+						break;
+					case 2:
+						stringifiedMove = "Up";
+						break;
+				}
+
+				return stringifiedMove;
+			},
+
+			getMove: function() {
+				let min = -2;
+				let max = 2;
+
+				return Math.floor(Math.random() * (max - min + 1)) + min;
+			},
+
+			// Returns human readable move
+			getMoveString: function() {
+				return this.stringify(this.getMove());
+			}
+		};
+
 		const createEntryForChatScreen = (message) => {
 			let entry = document.createElement("p");
 
@@ -46,15 +84,10 @@
 			return entry;
 		}
 
-		const sendChat = () => {
+		const showMessageInChatBox = (message) => {
 			let chatScreen = document.getElementById('chat-screen');
-			let chatBox = document.getElementById('chat-input');
-			let message = chatBox.value;
-
+			
 			chatScreen.appendChild(createEntryForChatScreen(message));
-
-			chatBox.value = '';
-
 			console.log(message);
 		}
 
@@ -62,6 +95,14 @@
 			if(event.keyCode == 13) {
 				sendChat();
 			}
+		}
+
+		const sendChat = () => {
+			let chatBox = document.getElementById('chat-input');
+			let message = chatBox.value;
+
+			showMessageInChatBox(message);
+			chatBox.value = '';
 		}
 
 		// Register events
