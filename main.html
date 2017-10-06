@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<title>Which Move</title>
+</head>
+<body>
+	<header>
+		
+	</header>
+	<main>
+		<div class=row>
+			<div id="chat-screen" class="s12 m12 l12 teal">
+				a
+			</div>
+		</div>
+		<div class="row valign-wrapper">
+			<div id="container-chat-input" class="col s12 m10 l10">
+				<input id="chat-input" type="text" name="">
+			</div>
+			<div id="container-chat-send-btn" class="col m2 l2 hide-on-small-only">
+				<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">Send
+    			<i class="material-icons right">send</i>
+  			</button>
+			</div>
+		</div>
+	</main>
+	<footer>
+		
+	</footer>
+	<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script type="text/javascript">
+		const sendChat = () => {
+			let chatBox = document.getElementById('chat-input');
+			let message = chatBox.value;
+
+			chatBox.value = '';
+
+			console.log(message);
+		}
+
+		const sendChatUsingEnterKey = (event) => {
+			if(event.keyCode == 13) {
+				sendChat();
+			}
+		}
+
+		// Register events
+		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
+		
+		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
+
+	</script>
+</body>
+</html>
