@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>canvas</title>
+	<script type="text/javascript">
+		function draw() {
+			let canvas = document.getElementById('canvas');
+			let context = canvas.getContext('2d');
+
+			// drawing a line
+			context.beginPath();
+			context.moveTo(25, 15);
+			context.lineTo(100, 100);
+			context.strokeStyle = 'green';
+			context.stroke();
+		}
+	</script>
+	<style type="text/css">
+		canvas { border: 1px solid black; }
+	</style>
+</head>
+<body onload="draw();">
+	<canvas id='canvas'></canvas>
+</body>
+</html>
