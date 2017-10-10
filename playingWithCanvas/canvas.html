@@ -5,21 +5,36 @@
 	<script type="text/javascript">
 		function draw() {
 			let canvas = document.getElementById('canvas');
-			let context = canvas.getContext('2d');
 
-			// drawing a line
-			context.beginPath();
-			context.moveTo(25, 15);
-			context.lineTo(100, 100);
-			context.strokeStyle = 'green';
-			context.stroke();
+			if (canvas.getContext) {
+				let context = canvas.getContext('2d');
+        let figureHeight = 10;
+        let figureWidth = 10;
+
+        let xPosition = computeXOfCenteredFigure(canvas.height, figureHeight);
+        let yPosition = computeXOfCenteredFigure(canvas.width, figureWidth);
+
+        context.fillStyle = 'rgba(0, 50, 200, 0.2)';
+        context.fillRect(yPosition, xPosition, figureWidth, figureHeight);
+			}
 		}
+
+    function computeXOfCenteredFigure(canvasHeight, figureHeight) {
+      return (canvasHeight / 2) - (figureHeight / 2);
+    }
+
+    function computeYOfCenteredFigure() {
+      return (canvasWidth / 2) - (figureWidth / 2); 
+    }
+
 	</script>
 	<style type="text/css">
 		canvas { border: 1px solid black; }
 	</style>
 </head>
 <body onload="draw();">
-	<canvas id='canvas'></canvas>
+	<canvas id='canvas'>
+		Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
+	</canvas>
 </body>
 </html>
