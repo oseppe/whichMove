@@ -27,18 +27,39 @@
         this.alpha = this.alpha + this.alphaChange;
         return this;
       },
+      moveX: function(direction = 'up', canvasHeight) {
+        let change = this.height * 0.10;
+
+        if (direction === 'up') change = change * -1;
+
+        let newX = this.x + change;
+
+        if (direction === 'up') {
+          newX = (newX < 0) ? 0 : newX;
+        }        
+        else if (direction === 'down') {
+          let downBorder = canvasHeight - this.height;
+
+          newX = (newX >= downBorder) ? downBorder : newX;
+        }
+
+        this.x = newX;
+
+        return this;
+      },
       moveY: function(direction = 'left', canvasWidth) {
         let change = this.width * 0.10;
 
-        if(direction === 'left') change = change * -1;
+        if (direction === 'left') change = change * -1;
 
         let newY = this.y + change;
 
-        if(direction === 'left') {
+        if (direction === 'left') {
           newY = (newY < 0) ? 0 : newY;
         }
-        else if(direction === 'right') {
-          let rightBorder = canvasWidth - this.width
+        else if (direction === 'right') {
+          let rightBorder = canvasWidth - this.width;
+
           newY = (newY >= rightBorder) ? rightBorder : newY;
         }
 
@@ -59,7 +80,7 @@
         if (sprite.y === -2) sprite.y = computeCenter(canvas.width, sprite.width);
 
         sprite.draw(context);
-        sprite.flicker().moveY('right', canvas.width);
+        sprite.flicker().moveX('down', canvas.height);
 
         window.requestAnimationFrame(draw);
 			}
