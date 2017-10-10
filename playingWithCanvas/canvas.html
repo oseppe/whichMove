@@ -8,53 +8,55 @@
       height: 10,
       width: 10,
       alpha: 1,
-      change: 0.05,
+      alphaChange: 0.05,
+      x: -2,
+      y: -2,
       draw: function(ctx) {
-
-        let xPosition = computeXOfCenteredFigure(canvas.height, this.height);
-        let yPosition = computeXOfCenteredFigure(canvas.width, this.width);
+        // let xPosition = computeXOfCenteredFigure(x, this.height);
+        // let yPosition = computeXOfCenteredFigure(y, this.width);
 
         ctx.fillStyle = `rgba(39, 174, 96, ${this.alpha})`;
-        ctx.fillRect(yPosition, xPosition, this.height, this.width);
+        ctx.fillRect(this.y, this.x, this.height, this.width);
+        return this;
       },
       flicker: function() {
         if (this.alpha >= 1 || this.alpha <= 0) {
-          this.change = this.change * -1;
+          this.alphaChange = this.alphaChange * -1;
         } 
         
-        this.alpha = this.alpha + this.change;
+        this.alpha = this.alpha + this.alphaChange;
+        return this;
+      },
+      moveLeft: function() {
+        let change = this.width * 0.10;
+        let newY = this.y - change;
+
+        this.y = (newY < 0) ? 0 : newY;
+
+        return this;
       }
     }
 
 		function draw() {
-			let canvas = document.getElementById('canvas');
-
+      let canvas = document.getElementById('canvas');
 			if (canvas.getContext) {
 				let context = canvas.getContext('2d');
 
         context.clearRect(0,0, canvas.width, canvas.height);
 
+        if (sprite.x === -2) sprite.x = computeCenter(canvas.height, sprite.height);
+        if (sprite.y === -2) sprite.y = computeCenter(canvas.width, sprite.width);
+
         sprite.draw(context);
         sprite.flicker();
+        sprite.moveLeft();
 
         window.requestAnimationFrame(draw);
-        // let figureHeight = 10;
-        // let figureWidth = 10;
-
-        // let xPosition = computeXOfCenteredFigure(canvas.height, figureHeight);
-        // let yPosition = computeXOfCenteredFigure(canvas.width, figureWidth);
-
-        // context.fillStyle = 'rgba(0, 50, 200, 0.2)';
-        // context.fillRect(yPosition, xPosition, figureWidth, figureHeight);
 			}
 		}
 
-    function computeXOfCenteredFigure(canvasHeight, figureHeight) {
-      return (canvasHeight / 2) - (figureHeight / 2);
-    }
-
-    function computeYOfCenteredFigure() {
-      return (canvasWidth / 2) - (figureWidth / 2); 
+    function computeCenter(canvasLength, figureLength) {
+      return (canvasLength / 2) - (figureLength / 2);
     }
 
 	</script>
