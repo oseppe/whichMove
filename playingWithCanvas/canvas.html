@@ -27,11 +27,22 @@
         this.alpha = this.alpha + this.alphaChange;
         return this;
       },
-      moveLeft: function() {
+      moveY: function(direction = 'left', canvasWidth) {
         let change = this.width * 0.10;
-        let newY = this.y - change;
 
-        this.y = (newY < 0) ? 0 : newY;
+        if(direction === 'left') change = change * -1;
+
+        let newY = this.y + change;
+
+        if(direction === 'left') {
+          newY = (newY < 0) ? 0 : newY;
+        }
+        else if(direction === 'right') {
+          let rightBorder = canvasWidth - this.width
+          newY = (newY >= rightBorder) ? rightBorder : newY;
+        }
+
+        this.y = newY;
 
         return this;
       }
@@ -48,8 +59,7 @@
         if (sprite.y === -2) sprite.y = computeCenter(canvas.width, sprite.width);
 
         sprite.draw(context);
-        sprite.flicker();
-        sprite.moveLeft();
+        sprite.flicker().moveY('right', canvas.width);
 
         window.requestAnimationFrame(draw);
 			}
