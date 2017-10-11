@@ -150,6 +150,61 @@
     spriteHandler.canvasWidth = canvas.width;
     spriteHandler.canvasHeight = canvas.height;
 
+    const movesArbiter = {
+			moves: [],
+			
+			clearMoves: function() {
+				this.moves = [];
+			},
+
+			addMove: function(move) {
+				this.moves.push(move);
+			},
+
+			getWinner: function() {
+				let tally = this.tallyMoves();
+
+				let winner = '';
+				let count = 0;
+
+				// TODO: how to handle equals
+				for (let move in tally) {
+					
+					if (tally[move] < count) continue;
+					
+					count = tally[move];
+					winner = move;
+				}
+
+				return winner;
+			},
+
+			showTally: function() {
+				let tally = this.tallyMoves();
+
+				for (let i in tally) {
+					console.log(`${i}: ${tally[i]}`);
+				}				
+
+			},
+
+			tallyMoves: function() {
+				let tally = {};
+
+				for (let move of this.moves) {
+					if (tally.hasOwnProperty(move)) {
+						tally[move]++; 
+					}
+
+					else{
+						Object.defineProperty(tally, move, { value: 1, writable: true, enumerable: true });
+					}
+				}
+
+				return tally;
+			}
+		}
+
 		const movesGenerator = {
 			stringify: function(move) {
 				let stringifiedMove = "";
@@ -191,25 +246,36 @@
 		const runner = {
 			run: function(times = 1, figureHandler) {
 
-				console.log(`times: ${times}`);
-				setTimeout(function() {
+				for (let i = 0; i < times; i++) {
 					let stringifiedMove = movesGenerator.getMoveString();
 
-					figureHandler.move(stringifiedMove);
-					showMessageInChatBox(stringifiedMove);
+					movesArbiter.addMove(stringifiedMove);
+				}
 
-					if(times > 0) {
-						times--;
-						runner.run(times, figureHandler);
-					}
+				let winner = movesArbiter.getWinner();
 
-				}, 500);
-			},
+				console.log('tally:');
+				movesArbiter.showTally();
+				console.log(`winner: ${movesArbiter.getWinner()}`);
+				console.log(`times: ${times}`);
+				movesArbiter.clearMoves();
 
-			// delayShow: function(message) {
-			// 	window.setTimeout(showMessageInChatBox(message), 3000);
-			// }
+				// setTimeout(function() {
+				// 	let stringifiedMove = movesGenerator.getMoveString();
+
+				// 	figureHandler.move(stringifiedMove);
+				// 	showMessageInChatBox(stringifiedMove);
+
+				// 	if (times > 0) {
+				// 		times--;
+				// 		runner.run(times, figureHandler);
+				// 	}
+
+				// }, 500);
+			}
 		}
+
+
 
 		const createEntryForChatScreen = (message) => {
 			let entry = document.createElement("p");
@@ -227,7 +293,7 @@
 		}
 
 		const sendChatUsingEnterKey = (event) => {
-			if(event.keyCode == 13) {
+			if (event.keyCode == 13) {
 				sendChat();
 			}
 		}
