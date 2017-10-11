@@ -113,8 +113,6 @@
           newX = (newX >= rightBorder) ? rightBorder : newX;
         }
 
-        console.log(`new X: ${newX}`)
-
         this.x = newX;
 
         return this;
@@ -244,35 +242,36 @@
 		};
 
 		const runner = {
-			run: function(times = 1, figureHandler) {
+			run: function(times = 1, votesCount = 10, figureHandler) {
 
-				for (let i = 0; i < times; i++) {
+				setTimeout(function() {
+					runner.startRound(votesCount);
+
+					let stringifiedMove = movesArbiter.getWinner();
+
+					console.log(stringifiedMove);
+
+					figureHandler.move(stringifiedMove);
+					showMessageInChatBox(stringifiedMove);
+
+					movesArbiter.showTally();
+					movesArbiter.clearMoves();
+
+					if (times > 0) {
+						times--;
+						runner.run(times, votesCount, figureHandler);
+					}
+
+				}, 500);
+			},
+
+			startRound: function(votesCount) {
+				for (let i = 0; i < votesCount; i++) {
 					let stringifiedMove = movesGenerator.getMoveString();
 
 					movesArbiter.addMove(stringifiedMove);
 				}
-
-				let winner = movesArbiter.getWinner();
-
-				console.log('tally:');
-				movesArbiter.showTally();
-				console.log(`winner: ${movesArbiter.getWinner()}`);
-				console.log(`times: ${times}`);
-				movesArbiter.clearMoves();
-
-				// setTimeout(function() {
-				// 	let stringifiedMove = movesGenerator.getMoveString();
-
-				// 	figureHandler.move(stringifiedMove);
-				// 	showMessageInChatBox(stringifiedMove);
-
-				// 	if (times > 0) {
-				// 		times--;
-				// 		runner.run(times, figureHandler);
-				// 	}
-
-				// }, 500);
-			}
+			},
 		}
 
 
@@ -314,7 +313,7 @@
 
 			input.value = "";
 
-			runner.run(times, spriteHandler);
+			runner.run(times, 30, spriteHandler);
 		}
 
 		const runRunnerUsingEnterKey = (event) => {
