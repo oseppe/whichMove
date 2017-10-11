@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<!-- Run interface -->
-		<div class="row valign-wrapper" style="display: none;">
+		<div class="row valign-wrapper">
 			<div id="container-runner-input" class="col s12 m10 l10">
 				<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 			</div>
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<!-- Chat Interface -->
-		<div class="row valign-wrapper">
+		<div class="row valign-wrapper" style="display: none;">
 			<div id="container-chat-input" class="col s12 m10 l10">
 				<input id="chat-input" type="text" name="" placeholder="type in command">
 			</div>
@@ -189,12 +189,21 @@
 		};
 
 		const runner = {
-			run: function(times = 1) {
-				for (var i = 0; i < times; i++) {
+			run: function(times = 1, figureHandler) {
+
+				console.log(`times: ${times}`);
+				setTimeout(function() {
 					let stringifiedMove = movesGenerator.getMoveString();
 
+					figureHandler.move(stringifiedMove);
 					showMessageInChatBox(stringifiedMove);
-				}
+
+					if(times > 0) {
+						times--;
+						runner.run(times, figureHandler);
+					}
+
+				}, 500);
 			},
 
 			// delayShow: function(message) {
@@ -239,7 +248,7 @@
 
 			input.value = "";
 
-			runner.run(times);
+			runner.run(times, spriteHandler);
 		}
 
 		const runRunnerUsingEnterKey = (event) => {
