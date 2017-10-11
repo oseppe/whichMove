@@ -58,8 +58,8 @@
 		let canvas = document.getElementById('canvas');
 
     const sprite = {
-      height: 10,
-      width: 10,
+      height: 20,
+      width: 20,
       alpha: 1,
       alphaChange: 0.05,
       x: -2,
@@ -78,7 +78,8 @@
         return this;
       },
       moveY: function(direction = 'up', canvasHeight) {
-        let change = this.height * 0.10;
+      	let change = this.height;
+        // let change = this.height * 0.10;
 
         if (direction === 'up') change = change * -1;
 
@@ -98,7 +99,8 @@
         return this;
       },
       moveX: function(direction = 'left', canvasWidth) {
-        let change = this.width * 0.10;
+        let change = this.width;
+        // let change = this.width * 0.10;
 
         if (direction === 'left') change = change * -1;
 
@@ -182,8 +184,21 @@
 
 				for (let i in tally) {
 					console.log(`${i}: ${tally[i]}`);
+				}
+			},
+
+			stringifyTally: function() {
+				let tally = this.tallyMoves();
+				let stringifiedTally = '';
+
+				for (let i in tally) {
+
+					if (tally[i] > 1) stringifiedTally = stringifiedTally + `${i}: ${tally[i]} votes | `;
+					else stringifiedTally = stringifiedTally + `${i}: ${tally[i]} vote | `;
+
 				}				
 
+				return stringifiedTally;
 			},
 
 			tallyMoves: function() {
@@ -200,7 +215,7 @@
 				}
 
 				return tally;
-			}
+			},
 		}
 
 		const movesGenerator = {
@@ -249,10 +264,9 @@
 
 					let stringifiedMove = movesArbiter.getWinner();
 
-					console.log(stringifiedMove);
-
 					figureHandler.move(stringifiedMove);
 					showMessageInChatBox(stringifiedMove);
+					showMessageInChatBox(movesArbiter.stringifyTally());
 
 					movesArbiter.showTally();
 					movesArbiter.clearMoves();
@@ -313,6 +327,7 @@
 
 			input.value = "";
 
+			// TODO: Make votesCount editable via a settings object
 			runner.run(times, 30, spriteHandler);
 		}
 
