@@ -327,8 +327,9 @@
 
 			input.value = "";
 
+			// TODO: Why the need for -1 to make the number of rounds correct?
 			// TODO: Make votesCount editable via a settings object
-			runner.run(times, 30, spriteHandler);
+			runner.run((times - 1), 30, spriteHandler);
 		}
 
 		const runRunnerUsingEnterKey = (event) => {
