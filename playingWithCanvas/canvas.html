@@ -2,8 +2,19 @@
 <html>
 <head>
 	<title>canvas</title>
-	<script type="text/javascript">
+	<style type="text/css">
+		canvas { border: 1px solid black; }
+	</style>
+</head>
+<body>
+	<canvas id='canvas'>
+		Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
+	</canvas>
+  <script type="text/javascript">
     'use strict'
+
+    let canvas = document.getElementById('canvas');
+
     const sprite = {
       height: 10,
       width: 10,
@@ -12,11 +23,8 @@
       x: -2,
       y: -2,
       draw: function(ctx) {
-        // let xPosition = computeXOfCenteredFigure(x, this.height);
-        // let yPosition = computeXOfCenteredFigure(y, this.width);
-
         ctx.fillStyle = `rgba(39, 174, 96, ${this.alpha})`;
-        ctx.fillRect(this.y, this.x, this.height, this.width);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
         return this;
       },
       flicker: function() {
@@ -27,77 +35,78 @@
         this.alpha = this.alpha + this.alphaChange;
         return this;
       },
-      moveX: function(direction = 'up', canvasHeight) {
+      moveY: function(direction = 'up', canvasHeight) {
         let change = this.height * 0.10;
 
         if (direction === 'up') change = change * -1;
 
-        let newX = this.x + change;
+        let newY = this.y + change;
 
         if (direction === 'up') {
-          newX = (newX < 0) ? 0 : newX;
+          newY = (newY < 0) ? 0 : newY;
         }        
         else if (direction === 'down') {
           let downBorder = canvasHeight - this.height;
 
-          newX = (newX >= downBorder) ? downBorder : newX;
-        }
-
-        this.x = newX;
-
-        return this;
-      },
-      moveY: function(direction = 'left', canvasWidth) {
-        let change = this.width * 0.10;
-
-        if (direction === 'left') change = change * -1;
-
-        let newY = this.y + change;
-
-        if (direction === 'left') {
-          newY = (newY < 0) ? 0 : newY;
-        }
-        else if (direction === 'right') {
-          let rightBorder = canvasWidth - this.width;
-
-          newY = (newY >= rightBorder) ? rightBorder : newY;
+          newY = (newY >= downBorder) ? downBorder : newY;
         }
 
         this.y = newY;
 
         return this;
+      },
+      moveX: function(direction = 'left', canvasWidth) {
+        let change = this.width * 0.10;
+
+        if (direction === 'left') change = change * -1;
+
+        let newX = this.x + change;
+
+        if (direction === 'left') {
+          newX = (newX < 0) ? 0 : newX;
+        }
+        else if (direction === 'right') {
+          let rightBorder = canvasWidth - this.width;
+
+          newX = (newX >= rightBorder) ? rightBorder : newX;
+        }
+
+        console.log(`new X: ${newX}`)
+
+        this.x = newX;
+
+        return this;
       }
     }
 
-		function draw() {
-      let canvas = document.getElementById('canvas');
-			if (canvas.getContext) {
-				let context = canvas.getContext('2d');
+    function draw() {
+      
+      if (canvas.getContext) {
+        let context = canvas.getContext('2d');
 
         context.clearRect(0,0, canvas.width, canvas.height);
 
-        if (sprite.x === -2) sprite.x = computeCenter(canvas.height, sprite.height);
-        if (sprite.y === -2) sprite.y = computeCenter(canvas.width, sprite.width);
+        if (sprite.y === -2) sprite.y = computeCenter(canvas.height, sprite.height);
+        if (sprite.x === -2) sprite.x = computeCenter(canvas.width, sprite.width);
 
-        sprite.draw(context);
-        sprite.flicker().moveX('down', canvas.height);
+        // sprite.flicker().moveY('down', canvas.height).draw(context);
 
         window.requestAnimationFrame(draw);
-			}
-		}
+      }
+    }
 
     function computeCenter(canvasLength, figureLength) {
       return (canvasLength / 2) - (figureLength / 2);
     }
 
-	</script>
-	<style type="text/css">
-		canvas { border: 1px solid black; }
-	</style>
-</head>
-<body onload="draw();">
-	<canvas id='canvas'>
-		Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
-	</canvas>
+    window.addEventListener('keydown', function(e){
+      if (e.keyCode == 37) {
+        sprite.moveY('left', canvas.width);
+        console.log("move left");
+      }
+    });
+
+    draw();
+  </script>
 </body>
 </html>
