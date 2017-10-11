@@ -89,7 +89,7 @@
         if (sprite.y === -2) sprite.y = computeCenter(canvas.height, sprite.height);
         if (sprite.x === -2) sprite.x = computeCenter(canvas.width, sprite.width);
 
-        // sprite.flicker().moveY('down', canvas.height).draw(context);
+        sprite.flicker().draw(context);
 
         window.requestAnimationFrame(draw);
       }
@@ -98,13 +98,6 @@
     function computeCenter(canvasLength, figureLength) {
       return (canvasLength / 2) - (figureLength / 2);
     }
-
-    window.addEventListener('keydown', function(e){
-      if (e.keyCode == 37) {
-        sprite.moveY('left', canvas.width);
-        console.log("move left");
-      }
-    });
 
     draw();
   </script>

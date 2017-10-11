@@ -12,12 +12,17 @@
 	</header>
 	<main>
 		<div class=row>
+			<canvas id='canvas'>
+				Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
+			</canvas>
+		</div>
+		<div class=row>
 			<div id="chat-screen" class="s12 m12 l12 teal">
 				
 			</div>
 		</div>
 		<!-- Run interface -->
-		<div class="row valign-wrapper">
+		<div class="row valign-wrapper" style="display: none;">
 			<div id="container-runner-input" class="col s12 m10 l10">
 				<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 			</div>
@@ -28,7 +33,7 @@
 			</div>
 		</div>
 		<!-- Chat Interface -->
-		<div class="row valign-wrapper" style="display: none;">
+		<div class="row valign-wrapper">
 			<div id="container-chat-input" class="col s12 m10 l10">
 				<input id="chat-input" type="text" name="" placeholder="type in command">
 			</div>
@@ -49,6 +54,101 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript">
 		'use strict';
+
+		let canvas = document.getElementById('canvas');
+
+    const sprite = {
+      height: 10,
+      width: 10,
+      alpha: 1,
+      alphaChange: 0.05,
+      x: -2,
+      y: -2,
+      draw: function(ctx) {
+        ctx.fillStyle = `rgba(39, 174, 96, ${this.alpha})`;
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+        return this;
+      },
+      flicker: function() {
+        if (this.alpha >= 1 || this.alpha <= 0) {
+          this.alphaChange = this.alphaChange * -1;
+        } 
+        
+        this.alpha = this.alpha + this.alphaChange;
+        return this;
+      },
+      moveY: function(direction = 'up', canvasHeight) {
+        let change = this.height * 0.10;
+
+        if (direction === 'up') change = change * -1;
+
+        let newY = this.y + change;
+
+        if (direction === 'up') {
+          newY = (newY < 0) ? 0 : newY;
+        }        
+        else if (direction === 'down') {
+          let downBorder = canvasHeight - this.height;
+
+          newY = (newY >= downBorder) ? downBorder : newY;
+        }
+
+        this.y = newY;
+
+        return this;
+      },
+      moveX: function(direction = 'left', canvasWidth) {
+        let change = this.width * 0.10;
+
+        if (direction === 'left') change = change * -1;
+
+        let newX = this.x + change;
+
+        if (direction === 'left') {
+          newX = (newX < 0) ? 0 : newX;
+        }
+        else if (direction === 'right') {
+          let rightBorder = canvasWidth - this.width;
+
+          newX = (newX >= rightBorder) ? rightBorder : newX;
+        }
+
+        console.log(`new X: ${newX}`)
+
+        this.x = newX;
+
+        return this;
+      }
+    }
+
+    draw();
+
+    const spriteHandler = {
+    	figure: sprite,
+    	canvasWidth: 0,
+    	canvasHeight: 0,
+    	move: function(direction) {
+    		let lowerCaseDirection = direction.toLowerCase();
+
+    		switch(lowerCaseDirection) {
+					case 'left':
+						this.figure.moveX('left', this.canvasWidth);
+						break;
+					case 'right':
+						this.figure.moveX('right', this.canvasWidth);
+						break;
+					case 'up':
+						this.figure.moveY('up', this.canvasHeight);
+						break;
+					case 'down':
+						this.figure.moveY('down', this.canvasHeight);
+						break;
+				}
+    	}
+    }
+
+    spriteHandler.canvasWidth = canvas.width;
+    spriteHandler.canvasHeight = canvas.height;
 
 		const movesGenerator = {
 			stringify: function(move) {
@@ -128,6 +228,7 @@
 			let message = chatBox.value;
 
 			showMessageInChatBox(message);
+			spriteHandler.move(message);
 			chatBox.value = '';
 		}
 
@@ -155,6 +256,27 @@
 		// Runner related events
 		document.getElementById('runner-run-btn').addEventListener('click', runRunner);
 		document.getElementById('runner-input').addEventListener('keypress', runRunnerUsingEnterKey);
+
+		// Functions
+		function draw() {
+      
+      if (canvas.getContext) {
+        let context = canvas.getContext('2d');
+
+        context.clearRect(0,0, canvas.width, canvas.height);
+
+        if (sprite.y === -2) sprite.y = computeCenter(canvas.height, sprite.height);
+        if (sprite.x === -2) sprite.x = computeCenter(canvas.width, sprite.width);
+
+        sprite.flicker().draw(context);
+
+        window.requestAnimationFrame(draw);
+      }
+    }
+
+    function computeCenter(canvasLength, figureLength) {
+      return (canvasLength / 2) - (figureLength / 2);
+    }
 	</script>
 </body>
 </html>
