@@ -11,50 +11,52 @@
 	</header>
 	<main>
 		<div class="row">
-			<div id="canvas-container" class="col s12 m6 l6 center-align">
-				<canvas id="canvas" height="300">
-					Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
-				</canvas>	
-			</div>
-			<div class="col s12 m6 l6">
-				<div id="" class="green accent-4">
-					a
+			<div id="pane-left" class="col s12 m6 l6">
+				<div id="canvas-container" class="s12 m6 l6 center-align">
+					<canvas id="canvas" height="300">
+						Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
+					</canvas>	
 				</div>
-				<div id="votes-tally" class="orange">
-					a					
+				<div class="s12 m6 l6">
+					<div id="" class="green accent-4">
+						a
+					</div>
+					<div id="votes-tally" class="orange">
+						a					
+					</div>
+					<div id="votes-list" class="cyan accent-4">
+						a
+					</div>
 				</div>
-				<div id="votes-list" class="cyan accent-4">
-					a
+			</div>
+			<div id="pane-right" class="col s12 m6 l6">
+				<div id="chat-screen" class="teal">
+				</div>
+				<!-- Run interface -->
+				<div class="row">
+					<div id="container-runner-input" class="col s12 m10 l10">
+						<input id="runner-input" type="text" name="" placeholder="Run how many times?">
+					</div>
+					<div id="container-runner-send-btn" class="col m2 l2 hide-on-small-only">
+						<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">Run
+		    			<i class="material-icons right">send</i>
+		  			</button>
+					</div>
+				</div>
+				<!-- Chat Interface -->
+				<div class="row" style="display: none;">
+					<div id="container-chat-input" class="col s12 m7 l7">
+						<input id="chat-input" type="text" name="" placeholder="type in command">
+					</div>
+					<div id="container-chat-send-btn" class="col m2 l2 hide-on-small-only">
+						<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">Send
+		    			<i class="material-icons right">send</i>
+		  			</button>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div id="chat-screen" class="s12 m12 l12 teal">
-				
-			</div>
-		</div>
-		<!-- Run interface -->
-		<div class="row valign-wrapper">
-			<div id="container-runner-input" class="col s12 m10 l10">
-				<input id="runner-input" type="text" name="" placeholder="Run how many times?">
-			</div>
-			<div id="container-runner-send-btn" class="col m2 l2 hide-on-small-only">
-				<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">Run
-    			<i class="material-icons right">send</i>
-  			</button>
-			</div>
-		</div>
-		<!-- Chat Interface -->
-		<div class="row valign-wrapper" style="display: none;">
-			<div id="container-chat-input" class="col s12 m10 l10">
-				<input id="chat-input" type="text" name="" placeholder="type in command">
-			</div>
-			<div id="container-chat-send-btn" class="col m2 l2 hide-on-small-only">
-				<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">Send
-    			<i class="material-icons right">send</i>
-  			</button>
-			</div>
-		</div>
+		
 	</main>
 	<footer>
 		

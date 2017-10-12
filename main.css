@@ -4,7 +4,7 @@ canvas {
 
 #chat-screen {
 	height: 300px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 #votes-list {
