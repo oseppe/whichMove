@@ -1,5 +1,12 @@
-canvas { border: 1px solid black; }
+canvas { 
+	border: 1px solid black;
+}
 
 #chat-screen {
+	height: 300px;
+	overflow-y: scroll;
+}
+
+#votes-list {
 	min-height: 300px;
 }
