@@ -3,7 +3,7 @@ canvas {
 }
 
 #btn-chat-settings {
-	color: #00796b;
+	
 }
 
 .chat-entry {
@@ -42,6 +42,10 @@ span.chat-entry-message {
 	padding-left: 0;
 }
 
+.material-icons.teal-darken-2 {
+	color: #00796b;
+}
+
 #pane-left {
 	
 }
@@ -50,4 +54,6 @@ span.chat-entry-message {
 	min-height: 300px;
 }
 
-
+#votes-tally-margin-left, #votes-tally-margin-right, #logo-container {
+	color: white;
+}
