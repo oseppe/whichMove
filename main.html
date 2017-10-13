@@ -35,17 +35,10 @@
 			</div>
 			<div id="pane-right" class="col s12 m6 l6">
 				<!-- chat screen -->
-				<div id="chat-screen" class="teal">
-					<div class="chat-entry row valign-wrapper">
-						<div class="chat-profile-pic-container">
-							<img class="chat-profile-pic" src="assets/magmaLuxSquare.png">
-						</div>
-						<span class="chat-profile-name">Terre</span>
-						<span class="chat-entry-message">vcdevjhb dvh drjkrdvvvvvviiiinbitufigh</span>	
-					</div>
+				<div id="chat-screen" class="">
 				</div>
 				<!-- Run interface -->
-				<div class="row">
+				<div class="row" style="display: none;">
 					<div id="container-runner-input" class="col s12 m9 l9">
 						<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 					</div>
@@ -57,7 +50,7 @@
 					</div>
 				</div>
 				<!-- Chat Interface -->
-				<div class="row" style="display: none;">
+				<div class="row" >
 					<div id="container-chat-input" class="col s12 m9 l9">
 						<input id="chat-input" type="text" name="" placeholder="type in command">
 					</div>
@@ -316,13 +309,29 @@
 
 
 
-		const createEntryForChatScreen = (message) => {
-			let entry = document.createElement("p");
+		const createEntryForChatScreen = (message, name = 'anon', picURL = 'assets/luxSquare.png') => {
+			let chatEntryDiv = document.createElement('div');
+			let chatProfilePicContainer = document.createElement('div');
+			let chatProfilePic = document.createElement('img');
+			let chatProfileName = document.createElement('span');
+			let chatEntryMessage = document.createElement('span');
 
+			chatEntryDiv.setAttribute('class', 'chat-entry row valign-wrapper');
+			chatProfilePicContainer.setAttribute('class', 'chat-profile-pic-container');
+			chatProfilePic.setAttribute('class', 'chat-profile-pic');
+			chatProfileName.setAttribute('class', 'chat-profile-name');
+			chatEntryMessage.setAttribute('class', 'chat-entry-message');
+			chatProfilePic.setAttribute('src', picURL);
 
-			entry.innerHTML = message;
+			chatProfileName.innerHTML = name;
+			chatProfilePicContainer.appendChild(chatProfilePic);
+			chatEntryMessage.innerHTML = message;
 
-			return entry;
+			chatEntryDiv.appendChild(chatProfilePicContainer);
+			chatEntryDiv.appendChild(chatProfileName);
+			chatEntryDiv.appendChild(chatEntryMessage);
+
+			return chatEntryDiv;
 		}
 
 		const showMessageInChatBox = (message) => {

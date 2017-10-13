@@ -3,7 +3,7 @@ canvas {
 }
 
 .chat-entry {
-	display: inline-flex;
+	margin-bottom: 0;
 }
 
 .chat-profile-pic {
@@ -21,8 +21,12 @@ span.chat-entry-message {
 
 #chat-screen {
 	height: 300px;
-	overflow-y: auto;
 	padding: 10px;
+	overflow-y: hidden;
+}
+
+#chat-screen:hover {
+	overflow-y: auto;
 }
 
 #container-runner-input {
@@ -32,6 +36,5 @@ span.chat-entry-message {
 #votes-list {
 	min-height: 300px;
 }
-
 
 
