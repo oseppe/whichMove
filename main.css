@@ -2,6 +2,10 @@ canvas {
 	border: 1px solid black;
 }
 
+#btn-chat-settings {
+	color: #00796b;
+}
+
 .chat-entry {
 	margin-bottom: 0;
 }
@@ -17,6 +21,7 @@ span.chat-profile-name {
 
 span.chat-entry-message {
 	padding-left: 8px;
+	word-break: break-all;
 }
 
 #chat-screen {
@@ -29,8 +34,16 @@ span.chat-entry-message {
 	overflow-y: auto;
 }
 
+#container-chat-send-btn {
+	text-align: right;
+}
+
 #container-runner-input {
 	padding-left: 0;
+}
+
+#pane-left {
+	
 }
 
 #votes-list {

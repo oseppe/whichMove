@@ -11,7 +11,7 @@
 	</header>
 	<main>
 		<div class="row">
-			<div id="pane-left" class="col s12 m6 l6">
+			<div id="pane-left" class="col s12 m6 l6 line-border">
 				<!-- Canvas -->
 				<div id="canvas-container" class="s12 m6 l6 center-align">
 					<canvas id="canvas" height="300">
@@ -28,36 +28,41 @@
 						a					
 					</div>
 					<!-- vote list -->
-					<div id="votes-list" class="cyan accent-4">
+					<div id="votes-list" class="cyan accent-4 hide-on-small-only">
 						a
 					</div>
 				</div>
 			</div>
 			<div id="pane-right" class="col s12 m6 l6">
-				<!-- chat screen -->
-				<div id="chat-screen" class="">
-				</div>
-				<!-- Run interface -->
-				<div class="row" style="display: none;">
-					<div id="container-runner-input" class="col s12 m9 l9">
-						<input id="runner-input" type="text" name="" placeholder="Run how many times?">
+				<div id="chat-ui">
+					<!-- chat screen -->
+					<div id="chat-screen" class="">
 					</div>
-					<div id="container-runner-send-btn" class="col m3 l3 hide-on-med-and-down">
-						<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">
-		    			RUN
-		  			</button>
-		  			<!--  -->
+					<!-- Run interface -->
+					<div class="row" style="display: none;">
+						<div id="container-runner-input" class="col s12 m9 l9">
+							<input id="runner-input" type="text" name="" placeholder="Run how many times?">
+						</div>
+						<div id="container-runner-send-btn" class="col m3 l3 hide-on-med-and-down">
+							<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">
+			    			RUN
+			  			</button>
+			  			<!--  -->
+						</div>
 					</div>
-				</div>
-				<!-- Chat Interface -->
-				<div class="row" >
-					<div id="container-chat-input" class="col s12 m9 l9">
-						<input id="chat-input" type="text" name="" placeholder="type in command">
-					</div>
-					<div id="container-chat-send-btn" class="col m3 l3 hide-on-small-only">
-						<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">
-		    			<i class="material-icons right">send</i>
-		  			</button>
+					<!-- Chat Interface -->
+					<div class="row" >
+						<div id="container-chat-input" class="col s12 m12 l12">
+							<input id="chat-input" type="text" name="" placeholder="type in command">
+						</div>
+						<div id="container-chat-settings-btn" class="col s6 m6 l6 valign-wrapper" >
+							<i id="btn-chat-settings" class="material-icons md-24">settings</i>
+						</div>
+						<div id="container-chat-send-btn" class="col s6 m6 l6">
+							<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">
+			    			chat
+			  			</button>
+						</div>
 					</div>
 				</div>
 			</div>
