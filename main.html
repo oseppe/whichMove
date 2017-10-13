@@ -12,51 +12,63 @@
 	<main>
 		<div class="row">
 			<div id="pane-left" class="col s12 m6 l6">
+				<!-- Canvas -->
 				<div id="canvas-container" class="s12 m6 l6 center-align">
 					<canvas id="canvas" height="300">
 						Please update your browser or download the <a href="https://www.google.com/chrome/browser/desktop/index.html">latest Google Chrome browser</a>
 					</canvas>	
 				</div>
 				<div class="s12 m6 l6">
+					<!-- logo / branding -->
 					<div id="" class="green accent-4">
 						a
 					</div>
+					<!-- tally -->
 					<div id="votes-tally" class="orange">
 						a					
 					</div>
+					<!-- vote list -->
 					<div id="votes-list" class="cyan accent-4">
 						a
 					</div>
 				</div>
 			</div>
 			<div id="pane-right" class="col s12 m6 l6">
+				<!-- chat screen -->
 				<div id="chat-screen" class="teal">
+					<div class="chat-entry row valign-wrapper">
+						<div class="chat-profile-pic-container">
+							<img class="chat-profile-pic" src="assets/magmaLuxSquare.png">
+						</div>
+						<span class="chat-profile-name">Terre</span>
+						<span class="chat-entry-message">vcdevjhb dvh drjkrdvvvvvviiiinbitufigh</span>	
+					</div>
 				</div>
 				<!-- Run interface -->
 				<div class="row">
-					<div id="container-runner-input" class="col s12 m10 l10">
+					<div id="container-runner-input" class="col s12 m9 l9">
 						<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 					</div>
-					<div id="container-runner-send-btn" class="col m2 l2 hide-on-small-only">
-						<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">Run
-		    			<i class="material-icons right">send</i>
+					<div id="container-runner-send-btn" class="col m3 l3 hide-on-med-and-down">
+						<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">
+		    			RUN
 		  			</button>
+		  			<!--  -->
 					</div>
 				</div>
 				<!-- Chat Interface -->
 				<div class="row" style="display: none;">
-					<div id="container-chat-input" class="col s12 m7 l7">
+					<div id="container-chat-input" class="col s12 m9 l9">
 						<input id="chat-input" type="text" name="" placeholder="type in command">
 					</div>
-					<div id="container-chat-send-btn" class="col m2 l2 hide-on-small-only">
-						<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">Send
+					<div id="container-chat-send-btn" class="col m3 l3 hide-on-small-only">
+						<button id="chat-send-btn" class="btn waves-effect" type="submit" name="action">
 		    			<i class="material-icons right">send</i>
 		  			</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		
 	</main>
 	<footer>
 		
@@ -306,6 +318,7 @@
 
 		const createEntryForChatScreen = (message) => {
 			let entry = document.createElement("p");
+
 
 			entry.innerHTML = message;
 
