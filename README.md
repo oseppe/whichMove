@@ -7,7 +7,7 @@ the first iteration will be focusing more on the client facing part. this means 
 ## Tasks
 :white_check_mark:  classes for canvas manipulation
 
-:white_medium_square:  chat screen class
+:white_check_mark:  chat screen class
 
 :white_check_mark:  chat input class
 
@@ -15,9 +15,21 @@ the first iteration will be focusing more on the client facing part. this means 
 
 :white_check_mark:  moves processor
 
-:white_medium_square: settings > sprite size and movement
+:white_medium_square: tally board
+
+:white_medium_square: vote board
 
 :white_medium_square: settings > number of votes per round
+
+:white_medium_square: settings > display name
+
+:white_medium_square: settings > display picture
+
+:white_medium_square: settings > sprite color
+
+:white_medium_square: chat - dont vertically center profile pic and display name when chat message is long
+
+:white_medium_square: backend shiz
 
 ### why?
 a project made for Amagi Front End Dev Training
