@@ -39,7 +39,7 @@
 					<div id="chat-screen" class="">
 					</div>
 					<!-- Run interface -->
-					<div class="row" style="display: none;">
+					<div class="row">
 						<div id="container-runner-input" class="col s12 m9 l9">
 							<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 						</div>
@@ -51,7 +51,7 @@
 						</div>
 					</div>
 					<!-- Chat Interface -->
-					<div class="row" >
+					<div class="row" style="display: none;">
 						<div id="container-chat-input" class="col s12 m12 l12">
 							<input id="chat-input" type="text" name="" placeholder="type in command">
 						</div>
@@ -78,6 +78,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
+	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
@@ -94,73 +95,7 @@
 
     const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
 
-    const movesArbiter = {
-			moves: [],
-			
-			clearMoves: function() {
-				this.moves = [];
-			},
-
-			addMove: function(move) {
-				this.moves.push(move);
-			},
-
-			getWinner: function() {
-				let tally = this.tallyMoves();
-
-				let winner = '';
-				let count = 0;
-
-				// TODO: how to handle equals
-				for (let move in tally) {
-					
-					if (tally[move] < count) continue;
-					
-					count = tally[move];
-					winner = move;
-				}
-
-				return winner;
-			},
-
-			showTally: function() {
-				let tally = this.tallyMoves();
-
-				for (let i in tally) {
-					console.log(`${i}: ${tally[i]}`);
-				}
-			},
-
-			stringifyTally: function() {
-				let tally = this.tallyMoves();
-				let stringifiedTally = '';
-
-				for (let i in tally) {
-
-					if (tally[i] > 1) stringifiedTally = stringifiedTally + `${i}: ${tally[i]} votes | `;
-					else stringifiedTally = stringifiedTally + `${i}: ${tally[i]} vote | `;
-
-				}				
-
-				return stringifiedTally;
-			},
-
-			tallyMoves: function() {
-				let tally = {};
-
-				for (let move of this.moves) {
-					if (tally.hasOwnProperty(move)) {
-						tally[move]++; 
-					}
-
-					else{
-						Object.defineProperty(tally, move, { value: 1, writable: true, enumerable: true });
-					}
-				}
-
-				return tally;
-			},
-		}
+    const movesArbiter = new MovesArbiter();
 
 		const movesGenerator = {
 			stringify: function(move) {
@@ -206,7 +141,7 @@
 				setTimeout(function() {
 					runner.startRound(votesCount);
 
-					let stringifiedMove = movesArbiter.getWinner();
+					let stringifiedMove = movesArbiter.winner;
 
 					figureHandler.move(stringifiedMove);
 					showMessageInChatBox(stringifiedMove);
