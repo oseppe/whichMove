@@ -1,7 +1,7 @@
 'use strict';
 
 class Sprite {
-	constructor(height, width, startX, startY){
+	constructor(startX, startY, width, height){
 		this.height = height;
 		this.width = width;
 		this.alpha = 1;

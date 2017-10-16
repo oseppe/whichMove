@@ -77,41 +77,22 @@
   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
+	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
 		let canvas = document.getElementById('canvas');
 
-		const sprite = new Sprite(20,20,-2,-2);
+		let spriteHeight = 20;
+		let spriteWidth = 20;
+		let startY = computeCenter(canvas.height, spriteHeight);
+		let startX = computeCenter(canvas.width, spriteWidth);
+		
+		const sprite = new Sprite(startX, startY, spriteWidth, spriteHeight);
 
     draw();
 
-    const spriteHandler = {
-    	figure: sprite,
-    	canvasWidth: 0,
-    	canvasHeight: 0,
-    	move: function(direction) {
-    		let lowerCaseDirection = direction.toLowerCase();
-
-    		switch(lowerCaseDirection) {
-					case 'left':
-						this.figure.moveX('left', this.canvasWidth);
-						break;
-					case 'right':
-						this.figure.moveX('right', this.canvasWidth);
-						break;
-					case 'up':
-						this.figure.moveY('up', this.canvasHeight);
-						break;
-					case 'down':
-						this.figure.moveY('down', this.canvasHeight);
-						break;
-				}
-    	}
-    }
-
-    spriteHandler.canvasWidth = canvas.width;
-    spriteHandler.canvasHeight = canvas.height;
+    const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
 
     const movesArbiter = {
 			moves: [],
