@@ -1,3 +1,5 @@
+'use strict';
+
 class MovesArbiter {
 	constructor() {
 		this.moves = [];

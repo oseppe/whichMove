@@ -1,3 +1,5 @@
+'use strict';
+
 class MovesGenerator {
 	stringify(move) {
 		let stringifiedMove = "";

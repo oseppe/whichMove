@@ -76,10 +76,12 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-	<script type="text/javascript" src="js/sprite.js"></script>
-	<script type="text/javascript" src="js/spriteHandler.js"></script>
+	<script type="text/javascript" src="js/chatScreen.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/movesGenerator.js"></script>
+	<script type="text/javascript" src="js/runner.js"></script>
+	<script type="text/javascript" src="js/sprite.js"></script>
+	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
@@ -92,79 +94,21 @@
 		
 		const sprite = new Sprite(startX, startY, spriteWidth, spriteHeight);
 
-    draw();
-
-    const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
+  	const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
 
     const movesArbiter = new MovesArbiter();
 
     const movesGenerator = new MovesGenerator();
 
-		const runner = {
-			run: function(times = 1, votesCount = 10, figureHandler) {
+    const chatScreenElem = document.getElementById('chat-screen');
+		const chatScreen = new ChatScreen(chatScreenElem);
 
-				setTimeout(function() {
-					runner.startRound(votesCount);
-
-					let stringifiedMove = movesArbiter.winner;
-
-					figureHandler.move(stringifiedMove);
-					showMessageInChatBox(stringifiedMove);
-					showMessageInChatBox(movesArbiter.stringifyTally());
-
-					movesArbiter.showTally();
-					movesArbiter.clearMoves();
-
-					if (times > 0) {
-						times--;
-						runner.run(times, votesCount, figureHandler);
-					}
-
-				}, 500);
-			},
-
-			startRound: function(votesCount) {
-				for (let i = 0; i < votesCount; i++) {
-					let stringifiedMove = movesGenerator.stringifiedMove;
-
-					movesArbiter.addMove(stringifiedMove);
-				}
-			},
-		}
-
-
-
-		const createEntryForChatScreen = (message, name = 'anon', picURL = 'assets/luxSquare.png') => {
-			let chatEntryDiv = document.createElement('div');
-			let chatProfilePicContainer = document.createElement('div');
-			let chatProfilePic = document.createElement('img');
-			let chatProfileName = document.createElement('span');
-			let chatEntryMessage = document.createElement('span');
-
-			chatEntryDiv.setAttribute('class', 'chat-entry row valign-wrapper');
-			chatProfilePicContainer.setAttribute('class', 'chat-profile-pic-container');
-			chatProfilePic.setAttribute('class', 'chat-profile-pic');
-			chatProfileName.setAttribute('class', 'chat-profile-name');
-			chatEntryMessage.setAttribute('class', 'chat-entry-message');
-			chatProfilePic.setAttribute('src', picURL);
-
-			chatProfileName.innerHTML = name;
-			chatProfilePicContainer.appendChild(chatProfilePic);
-			chatEntryMessage.innerHTML = message;
-
-			chatEntryDiv.appendChild(chatProfilePicContainer);
-			chatEntryDiv.appendChild(chatProfileName);
-			chatEntryDiv.appendChild(chatEntryMessage);
-
-			return chatEntryDiv;
-		}
-
-		const showMessageInChatBox = (message) => {
-			let chatScreen = document.getElementById('chat-screen');
-			
-			chatScreen.appendChild(createEntryForChatScreen(message));
-			scrollToLatestEntry();
-		}
+		const runnerInputElem = document.getElementById('runner-input');
+		const runner = new Runner(spriteHandler, 
+										movesArbiter, 
+										movesGenerator,
+										chatScreen,
+										runnerInputElem);
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {
@@ -176,28 +120,21 @@
 			let chatBox = document.getElementById('chat-input');
 			let message = chatBox.value;
 
-			showMessageInChatBox(message);
+			chatScreen.addEntry(message);
+			chatScreen.scrollToLatestEntry();
 			spriteHandler.move(message);
 			chatBox.value = '';
 		}
 
-		const runRunner = () => {
-			let input = document.getElementById('runner-input')
-			// TODO: add validator
-			let times = +(input.value);
-
-			input.value = "";
-
-			// TODO: Why the need for -1 to make the number of rounds correct?
-			// TODO: Make votesCount editable via a settings object
-			runner.run((times - 1), 30, spriteHandler);
-		}
-
+		const runRunner = () => runner.run();
+			
 		const runRunnerUsingEnterKey = (event) => {
 			if(event.keyCode == 13) {
 				runRunner();
 			}	
 		}
+
+		draw();
 
 		// Register events
 		// Chat related events
@@ -210,7 +147,7 @@
 
 		// Functions
 		function draw() {
-      
+	      
       if (canvas.getContext) {
         let context = canvas.getContext('2d');
 
@@ -224,12 +161,6 @@
 
     function computeCenter(canvasLength, figureLength) {
       return (canvasLength / 2) - (figureLength / 2);
-    }
-
-    function scrollToLatestEntry() {
-    	let chatList = document.getElementById('chat-screen');
-
-    	chatList.scrollTop = chatList.scrollHeight - chatList.clientHeight;
     }
 	</script>
 </body>
