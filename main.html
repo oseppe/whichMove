@@ -79,6 +79,7 @@
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
+	<script type="text/javascript" src="js/movesGenerator.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
@@ -97,43 +98,7 @@
 
     const movesArbiter = new MovesArbiter();
 
-		const movesGenerator = {
-			stringify: function(move) {
-				let stringifiedMove = "";
-
-				switch(move) {
-					case -2:
-						stringifiedMove = "Down";
-						break;
-					case -1:
-						stringifiedMove = "Left";
-						break;
-					case 0:
-						stringifiedMove = "Stay";
-						break;
-					case 1:
-						stringifiedMove = "Right";
-						break;
-					case 2:
-						stringifiedMove = "Up";
-						break;
-				}
-
-				return stringifiedMove;
-			},
-
-			getMove: function() {
-				let min = -2;
-				let max = 2;
-
-				return Math.floor(Math.random() * (max - min + 1)) + min;
-			},
-
-			// Returns human readable move
-			getMoveString: function() {
-				return this.stringify(this.getMove());
-			}
-		};
+    const movesGenerator = new MovesGenerator();
 
 		const runner = {
 			run: function(times = 1, votesCount = 10, figureHandler) {
@@ -160,7 +125,7 @@
 
 			startRound: function(votesCount) {
 				for (let i = 0; i < votesCount; i++) {
-					let stringifiedMove = movesGenerator.getMoveString();
+					let stringifiedMove = movesGenerator.stringifiedMove;
 
 					movesArbiter.addMove(stringifiedMove);
 				}
@@ -250,9 +215,6 @@
         let context = canvas.getContext('2d');
 
         context.clearRect(0,0, canvas.width, canvas.height);
-
-        if (sprite.y === -2) sprite.y = computeCenter(canvas.height, sprite.height);
-        if (sprite.x === -2) sprite.x = computeCenter(canvas.width, sprite.width);
 
         sprite.flicker().draw(context);
 
