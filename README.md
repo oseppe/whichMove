@@ -15,6 +15,8 @@ the first iteration will be focusing more on the client facing part. this means 
 
 :white_check_mark:  moves processor
 
+:white_check_mark:  separate js files
+
 :white_medium_square: tally board
 
 :white_medium_square: vote board
@@ -30,6 +32,8 @@ the first iteration will be focusing more on the client facing part. this means 
 :white_medium_square: chat - dont vertically center profile pic and display name when chat message is long
 
 :white_medium_square: backend shiz
+
+:white_medium_square: use require.js to further separate js files
 
 ### why?
 a project made for Amagi Front End Dev Training

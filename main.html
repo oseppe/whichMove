@@ -63,7 +63,7 @@
 					<div id="chat-screen" class="">
 					</div>
 					<!-- Run interface -->
-					<div class="row" style="display: none;">
+					<div class="row">
 						<div id="container-runner-input" class="col s12 m9 l9">
 							<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 						</div>
@@ -75,7 +75,7 @@
 						</div>
 					</div>
 					<!-- Chat Interface -->
-					<div class="row" >
+					<div class="row" style="display: none;">
 						<div id="container-chat-input" class="col s12 m12 l12">
 							<input id="chat-input" type="text" name="" placeholder="type in command">
 						</div>
@@ -100,275 +100,39 @@
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script type="text/javascript" src="js/chatScreen.js"></script>
+	<script type="text/javascript" src="js/movesArbiter.js"></script>
+	<script type="text/javascript" src="js/movesGenerator.js"></script>
+	<script type="text/javascript" src="js/runner.js"></script>
+	<script type="text/javascript" src="js/sprite.js"></script>
+	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
 		let canvas = document.getElementById('canvas');
 
-    const sprite = {
-      height: 20,
-      width: 20,
-      alpha: 1,
-      alphaChange: 0.05,
-      x: -2,
-      y: -2,
-      draw: function(ctx) {
-        ctx.fillStyle = `rgba(39, 174, 96, ${this.alpha})`;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-        return this;
-      },
-      flicker: function() {
-        if (this.alpha >= 1 || this.alpha <= 0) {
-          this.alphaChange = this.alphaChange * -1;
-        } 
-        
-        this.alpha = this.alpha + this.alphaChange;
-        return this;
-      },
-      moveY: function(direction = 'up', canvasHeight) {
-      	let change = this.height;
-        // let change = this.height * 0.10;
+		let spriteHeight = 20;
+		let spriteWidth = 20;
+		let startY = computeCenter(canvas.height, spriteHeight);
+		let startX = computeCenter(canvas.width, spriteWidth);
+		
+		const sprite = new Sprite(startX, startY, spriteWidth, spriteHeight);
 
-        if (direction === 'up') change = change * -1;
+  	const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
 
-        let newY = this.y + change;
+    const movesArbiter = new MovesArbiter();
 
-        if (direction === 'up') {
-          newY = (newY < 0) ? 0 : newY;
-        }        
-        else if (direction === 'down') {
-          let downBorder = canvasHeight - this.height;
+    const movesGenerator = new MovesGenerator();
 
-          newY = (newY >= downBorder) ? downBorder : newY;
-        }
+    const chatScreenElem = document.getElementById('chat-screen');
+		const chatScreen = new ChatScreen(chatScreenElem);
 
-        this.y = newY;
-
-        return this;
-      },
-      moveX: function(direction = 'left', canvasWidth) {
-        let change = this.width;
-        // let change = this.width * 0.10;
-
-        if (direction === 'left') change = change * -1;
-
-        let newX = this.x + change;
-
-        if (direction === 'left') {
-          newX = (newX < 0) ? 0 : newX;
-        }
-        else if (direction === 'right') {
-          let rightBorder = canvasWidth - this.width;
-
-          newX = (newX >= rightBorder) ? rightBorder : newX;
-        }
-
-        this.x = newX;
-
-        return this;
-      }
-    }
-
-    draw();
-
-    const spriteHandler = {
-    	figure: sprite,
-    	canvasWidth: 0,
-    	canvasHeight: 0,
-    	move: function(direction) {
-    		let lowerCaseDirection = direction.toLowerCase();
-
-    		switch(lowerCaseDirection) {
-					case 'left':
-						this.figure.moveX('left', this.canvasWidth);
-						break;
-					case 'right':
-						this.figure.moveX('right', this.canvasWidth);
-						break;
-					case 'up':
-						this.figure.moveY('up', this.canvasHeight);
-						break;
-					case 'down':
-						this.figure.moveY('down', this.canvasHeight);
-						break;
-				}
-    	}
-    }
-
-    spriteHandler.canvasWidth = canvas.width;
-    spriteHandler.canvasHeight = canvas.height;
-
-    const movesArbiter = {
-			moves: [],
-			
-			clearMoves: function() {
-				this.moves = [];
-			},
-
-			addMove: function(move) {
-				this.moves.push(move);
-			},
-
-			getWinner: function() {
-				let tally = this.tallyMoves();
-
-				let winner = '';
-				let count = 0;
-
-				// TODO: how to handle equals
-				for (let move in tally) {
-					
-					if (tally[move] < count) continue;
-					
-					count = tally[move];
-					winner = move;
-				}
-
-				return winner;
-			},
-
-			showTally: function() {
-				let tally = this.tallyMoves();
-
-				for (let i in tally) {
-					console.log(`${i}: ${tally[i]}`);
-				}
-			},
-
-			stringifyTally: function() {
-				let tally = this.tallyMoves();
-				let stringifiedTally = '';
-
-				for (let i in tally) {
-
-					if (tally[i] > 1) stringifiedTally = stringifiedTally + `${i}: ${tally[i]} votes | `;
-					else stringifiedTally = stringifiedTally + `${i}: ${tally[i]} vote | `;
-
-				}				
-
-				return stringifiedTally;
-			},
-
-			tallyMoves: function() {
-				let tally = {};
-
-				for (let move of this.moves) {
-					if (tally.hasOwnProperty(move)) {
-						tally[move]++; 
-					}
-
-					else{
-						Object.defineProperty(tally, move, { value: 1, writable: true, enumerable: true });
-					}
-				}
-
-				return tally;
-			},
-		}
-
-		const movesGenerator = {
-			stringify: function(move) {
-				let stringifiedMove = "";
-
-				switch(move) {
-					case -2:
-						stringifiedMove = "Down";
-						break;
-					case -1:
-						stringifiedMove = "Left";
-						break;
-					case 0:
-						stringifiedMove = "Stay";
-						break;
-					case 1:
-						stringifiedMove = "Right";
-						break;
-					case 2:
-						stringifiedMove = "Up";
-						break;
-				}
-
-				return stringifiedMove;
-			},
-
-			getMove: function() {
-				let min = -2;
-				let max = 2;
-
-				return Math.floor(Math.random() * (max - min + 1)) + min;
-			},
-
-			// Returns human readable move
-			getMoveString: function() {
-				return this.stringify(this.getMove());
-			}
-		};
-
-		const runner = {
-			run: function(times = 1, votesCount = 10, figureHandler) {
-
-				setTimeout(function() {
-					runner.startRound(votesCount);
-
-					let stringifiedMove = movesArbiter.getWinner();
-
-					figureHandler.move(stringifiedMove);
-					showMessageInChatBox(stringifiedMove);
-					showMessageInChatBox(movesArbiter.stringifyTally());
-
-					movesArbiter.showTally();
-					movesArbiter.clearMoves();
-
-					if (times > 0) {
-						times--;
-						runner.run(times, votesCount, figureHandler);
-					}
-
-				}, 500);
-			},
-
-			startRound: function(votesCount) {
-				for (let i = 0; i < votesCount; i++) {
-					let stringifiedMove = movesGenerator.getMoveString();
-
-					movesArbiter.addMove(stringifiedMove);
-				}
-			},
-		}
-
-
-
-		const createEntryForChatScreen = (message, name = 'anon', picURL = 'assets/luxSquare.png') => {
-			let chatEntryDiv = document.createElement('div');
-			let chatProfilePicContainer = document.createElement('div');
-			let chatProfilePic = document.createElement('img');
-			let chatProfileName = document.createElement('span');
-			let chatEntryMessage = document.createElement('span');
-
-			chatEntryDiv.setAttribute('class', 'chat-entry row valign-wrapper');
-			chatProfilePicContainer.setAttribute('class', 'chat-profile-pic-container');
-			chatProfilePic.setAttribute('class', 'chat-profile-pic');
-			chatProfileName.setAttribute('class', 'chat-profile-name');
-			chatEntryMessage.setAttribute('class', 'chat-entry-message');
-			chatProfilePic.setAttribute('src', picURL);
-
-			chatProfileName.innerHTML = name;
-			chatProfilePicContainer.appendChild(chatProfilePic);
-			chatEntryMessage.innerHTML = message;
-
-			chatEntryDiv.appendChild(chatProfilePicContainer);
-			chatEntryDiv.appendChild(chatProfileName);
-			chatEntryDiv.appendChild(chatEntryMessage);
-
-			return chatEntryDiv;
-		}
-
-		const showMessageInChatBox = (message) => {
-			let chatScreen = document.getElementById('chat-screen');
-			
-			chatScreen.appendChild(createEntryForChatScreen(message));
-			scrollToLatestEntry();
-		}
+		const runnerInputElem = document.getElementById('runner-input');
+		const runner = new Runner(spriteHandler, 
+										movesArbiter, 
+										movesGenerator,
+										chatScreen,
+										runnerInputElem);
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {
@@ -380,28 +144,21 @@
 			let chatBox = document.getElementById('chat-input');
 			let message = chatBox.value;
 
-			showMessageInChatBox(message);
+			chatScreen.addEntry(message);
+			chatScreen.scrollToLatestEntry();
 			spriteHandler.move(message);
 			chatBox.value = '';
 		}
 
-		const runRunner = () => {
-			let input = document.getElementById('runner-input')
-			// TODO: add validator
-			let times = +(input.value);
-
-			input.value = "";
-
-			// TODO: Why the need for -1 to make the number of rounds correct?
-			// TODO: Make votesCount editable via a settings object
-			runner.run((times - 1), 30, spriteHandler);
-		}
-
+		const runRunner = () => runner.run();
+			
 		const runRunnerUsingEnterKey = (event) => {
 			if(event.keyCode == 13) {
 				runRunner();
 			}	
 		}
+
+		draw();
 
 		// Register events
 		// Chat related events
@@ -414,14 +171,11 @@
 
 		// Functions
 		function draw() {
-      
+	      
       if (canvas.getContext) {
         let context = canvas.getContext('2d');
 
         context.clearRect(0,0, canvas.width, canvas.height);
-
-        if (sprite.y === -2) sprite.y = computeCenter(canvas.height, sprite.height);
-        if (sprite.x === -2) sprite.x = computeCenter(canvas.width, sprite.width);
 
         sprite.flicker().draw(context);
 
@@ -431,12 +185,6 @@
 
     function computeCenter(canvasLength, figureLength) {
       return (canvasLength / 2) - (figureLength / 2);
-    }
-
-    function scrollToLatestEntry() {
-    	let chatList = document.getElementById('chat-screen');
-
-    	chatList.scrollTop = chatList.scrollHeight - chatList.clientHeight;
     }
 	</script>
 </body>
