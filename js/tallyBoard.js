@@ -18,8 +18,12 @@ class TallyBoard {
 		return move;
 	}
 
-	indicateWinner(winner) {
-		
+	indicateWinner(elem) {
+		elem.className = 'material-icons orange-darken-4';
+	}
+
+	resetIcon(elem) {
+		elem.className = 'material-icons teal-darken-2';
 	}
 
 	update(tally, winner) {
@@ -28,9 +32,10 @@ class TallyBoard {
 			
 			if (!tally.hasOwnProperty(move) || elem.lastElementChild === null) continue;
 
-			console.log(`${move} = ${tally[move]}`);
-
 			elem.lastElementChild.innerHTML = tally[move];
+
+			if (move === winner) this.indicateWinner(elem.firstElementChild);
+			else this.resetIcon(elem.firstElementChild);
 		}
 	}	
 }
