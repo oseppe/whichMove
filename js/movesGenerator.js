@@ -6,19 +6,19 @@ class MovesGenerator {
 
 		switch(move) {
 			case -2:
-				stringifiedMove = "Down";
+				stringifiedMove = "down";
 				break;
 			case -1:
-				stringifiedMove = "Left";
+				stringifiedMove = "left";
 				break;
 			case 0:
-				stringifiedMove = "Stay";
+				stringifiedMove = "stay";
 				break;
 			case 1:
-				stringifiedMove = "Right";
+				stringifiedMove = "right";
 				break;
 			case 2:
-				stringifiedMove = "Up";
+				stringifiedMove = "up";
 				break;
 		}
 

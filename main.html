@@ -30,22 +30,23 @@
 						</div>
 						<div id="votes-tally-left" class="col s2">
 							<i class="material-icons teal-darken-2">arrow_back</i>
+							<div id="votes-count-left" class="votes-count">7</div>
 						</div>
 						<div id="votes-tally-up" class="col s2">
 							<i class="material-icons teal-darken-2">arrow_upward</i>
-							
+							<div id="votes-count-up" class="votes-count">7</div>
 						</div>
 						<div id="votes-tally-right" class="col s2">
 							<i class="material-icons teal-darken-2">arrow_forward</i>
-							
+							<div id="votes-count-right" class="votes-count">7</div>
 						</div>
 						<div id="votes-tally-down" class="col s2">
 							<i class="material-icons teal-darken-2">arrow_downward</i>
-							
+							<div id="votes-count-down" class="votes-count">7</div>
 						</div>
 						<div id="votes-tally-stay" class="col s2">
 							<i class="material-icons teal-darken-2">stop</i>
-							
+							<div id="votes-count-stay" class="votes-count">7</div>
 						</div>
 						<div id="votes-tally-margin-right" class="col s1">
 							a
@@ -106,6 +107,7 @@
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
+	<script type="text/javascript" src="js/tallyBoard.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
@@ -127,11 +129,15 @@
     const chatScreenElem = document.getElementById('chat-screen');
 		const chatScreen = new ChatScreen(chatScreenElem);
 
+    const tallyBoardElem = document.getElementById('votes-tally');
+    const tallyBoard = new TallyBoard(tallyBoardElem);
+
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(spriteHandler, 
 										movesArbiter, 
 										movesGenerator,
 										chatScreen,
+                    tallyBoard,
 										runnerInputElem);
 
 		const sendChatUsingEnterKey = (event) => {

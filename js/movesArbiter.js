@@ -56,6 +56,8 @@ class MovesArbiter {
 		let tally = {};
 
 		for (let move of this.moves) {
+			move = move.toLowerCase();
+
 			if (tally.hasOwnProperty(move)) {
 				tally[move]++; 
 			}

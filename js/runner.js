@@ -4,12 +4,14 @@ class Runner {
 	constructor(figureHandler, 
 							movesArbiter, 
 							movesGenerator, 
-							chatScreen, 
+							chatScreen,
+              tallyBoard, 
 							inputElem) {
 		this.figureHandler = figureHandler;
 		this.movesArbiter = movesArbiter;
 		this.movesGenerator = movesGenerator;
 		this.chatScreen = chatScreen;
+    this.tallyBoard = tallyBoard;
 		this.inputElem = inputElem;
 	}
 
@@ -40,8 +42,10 @@ class Runner {
 
 			runner.figureHandler.move(stringifiedMove);
 			runner.chatScreen.addEntry(stringifiedMove);
-			runner.chatScreen.addEntry(movesArbiter.stringifyTally());
+			runner.chatScreen.addEntry(runner.movesArbiter.stringifyTally());
 			runner.chatScreen.scrollToLatestEntry();
+
+      runner.tallyBoard.update(runner.movesArbiter.tallyMoves(), stringifiedMove);
 
 			runner.movesArbiter.clearMoves();
 
