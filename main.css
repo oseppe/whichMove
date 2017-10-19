@@ -55,7 +55,13 @@ span.chat-entry-message {
 }
 
 #votes-list {
-	min-height: 300px;
+	height: 200px;
+	padding: 10px;
+	overflow-y: hidden;
+}
+
+#votes-list:hover {
+	overflow-y: auto;
 }
 
 #votes-tally-margin-left, #votes-tally-margin-right, #logo-container {

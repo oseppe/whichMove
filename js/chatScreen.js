@@ -3,10 +3,17 @@
 class ChatScreen {
 	constructor(chatScreenElem) {
 		this.screenElem = chatScreenElem;
+		this.subscribableEvents = {};
 	}
 
 	addEntry(message) {
 		this.screenElem.appendChild(this.createEntry(message));
+
+		if (this.subscribableEvents.hasOwnProperty('addEntry')) {
+			for(let callback of this.subscribableEvents['addEntry']) {
+				callback(message);
+			}
+		}
 	}
 
 	createEntry(message, name = 'anon', picURL = 'assets/luxSquare.png') {
@@ -36,5 +43,12 @@ class ChatScreen {
 
 	scrollToLatestEntry() {
 		this.screenElem.scrollTop = this.screenElem.scrollHeight - this.screenElem.clientHeight;
+	}
+
+	subscribe(event, callback) {
+		if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback);
+		else {
+			this.subscribableEvents[event] = [callback];
+		}
 	}
 }

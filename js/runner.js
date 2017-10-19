@@ -5,13 +5,15 @@ class Runner {
 							movesArbiter, 
 							movesGenerator, 
 							chatScreen,
-              tallyBoard, 
+              tallyBoard,
+              voteBoard, 
 							inputElem) {
 		this.figureHandler = figureHandler;
 		this.movesArbiter = movesArbiter;
 		this.movesGenerator = movesGenerator;
 		this.chatScreen = chatScreen;
     this.tallyBoard = tallyBoard;
+    this.voteBoard = voteBoard;
 		this.inputElem = inputElem;
 	}
 
@@ -28,7 +30,8 @@ class Runner {
 		for (let i = 0; i < votesCount; i++) {
 			let stringifiedMove = movesGenerator.stringifiedMove;
 
-			movesArbiter.addMove(stringifiedMove);
+			this.movesArbiter.addMove(stringifiedMove);
+      this.voteBoard.addEntry(stringifiedMove);
 		}
 	}
 

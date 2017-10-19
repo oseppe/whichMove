@@ -17,7 +17,7 @@ the first iteration will be focusing more on the client facing part. this means 
 
 :white_check_mark:  separate js files
 
-:white_medium_square: tally board
+:white_check_mark: tally board
 
 :white_medium_square: vote board
 
