@@ -63,7 +63,7 @@
 					<div id="chat-screen" class="">
 					</div>
 					<!-- Run interface -->
-					<div class="row">
+					<div class="row" style="display: none;">
 						<div id="container-runner-input" class="col s12 m12 l12">
 							<input id="runner-input" type="text" name="" placeholder="Run how many times?">
 						</div>
@@ -78,7 +78,7 @@
 						</div>
 					</div>
 					<!-- Chat Interface -->
-					<div class="row" style="display: none;">
+					<div class="row">
 						<div id="container-chat-input" class="col s12 m12 l12">
 							<input id="chat-input" type="text" name="" placeholder="type in command">
 						</div>
@@ -110,6 +110,7 @@
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/tallyBoard.js"></script>
+	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/voteBoard.js"></script>
 	<script type="text/javascript">
 		'use strict';
@@ -146,6 +147,8 @@
                     tallyBoard,
                     voteBoard,
 										runnerInputElem);
+
+		chatScreen.subscribe('addEntry', movesArbiter, movesArbiter.chatCallback);
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {

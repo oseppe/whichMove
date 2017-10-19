@@ -6,14 +6,10 @@ class ChatScreen {
 		this.subscribableEvents = {};
 	}
 
-	addEntry(message) {
+	addEntry(message, user) {
 		this.screenElem.appendChild(this.createEntry(message));
 
-		if (this.subscribableEvents.hasOwnProperty('addEntry')) {
-			for(let callback of this.subscribableEvents['addEntry']) {
-				callback(message);
-			}
-		}
+		this.notify('addEntry', {'message': message, 'user': user});
 	}
 
 	createEntry(message, name = 'anon', picURL = 'assets/images/luxSquare.png') {
@@ -41,14 +37,22 @@ class ChatScreen {
 		return chatEntryDiv;
 	}
 
+	notify(event, data) {
+		if (this.subscribableEvents.hasOwnProperty(event)) {
+			for(let listener of this.subscribableEvents[event]) {
+				listener['callback'](listener['caller'], data);
+			}
+		}
+	}
+
 	scrollToLatestEntry() {
 		this.screenElem.scrollTop = this.screenElem.scrollHeight - this.screenElem.clientHeight;
 	}
 
-	subscribe(event, callback) {
+	subscribe(event, caller, callback) {
 		if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback);
 		else {
-			this.subscribableEvents[event] = [callback];
+			this.subscribableEvents[event] = [{'caller': caller, 'callback': callback}];
 		}
 	}
 }

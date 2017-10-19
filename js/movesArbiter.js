@@ -3,6 +3,7 @@
 class MovesArbiter {
 	constructor() {
 		this.moves = [];
+		this.subscribableEvents = {};
 	}
 
 	clearMoves() {
@@ -31,6 +32,52 @@ class MovesArbiter {
 		return winner;
 	}
 
+	isMove(message) {
+		let lowercaseMessage = message.toLowerCase();
+
+		let valid = lowercaseMessage === 'left' ||
+					lowercaseMessage === 'up' ||
+					lowercaseMessage === 'right' ||
+					lowercaseMessage === 'down' ||
+					lowercaseMessage === 'stay'
+
+		if (valid) console.log('message is a move!');
+		else console.log('not a move boo');
+
+		return valid;
+
+		// return lowercaseMessage === 'left' ||
+		// 			lowercaseMessage === 'up' ||
+		// 			lowercaseMessage === 'right' ||
+		// 			lowercaseMessage === 'down' ||
+		// 			lowercaseMessage === 'stay'
+	}
+
+	chatCallback(handler, data) {
+		if (!handler.isCallbackDataValid(data)) return;
+		handler.parseChatMessage(data['message'], data['user']);
+	}
+
+	isCallbackDataValid(data) {
+		return data.hasOwnProperty('message') && data.hasOwnProperty('message');
+	}
+
+	// notify(event, data) {
+	// 	if (this.subscribableEvents.hasOwnProperty(event)) {
+	// 		for(let callback of this.subscribableEvents[event]) {
+	// 			callback(data);
+	// 		}
+	// 	}
+	// }
+
+	parseChatMessage(message, user) {
+		if (!this.isMove(message)) return;
+
+		this.addMove(message.toLowerCase());
+
+		// this.notify('parseChatMessage', { 'message': message, 'user': user });
+	}
+
 	showTally() {
 		let tally = this.tallyMoves();
 
@@ -50,6 +97,13 @@ class MovesArbiter {
 
 		return stringifiedTally;
 	}
+
+	// subscribe(event, callback) {
+	// 	if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback);
+	// 	else {
+	// 		this.subscribableEvents[event] = [callback];
+	// 	}
+	// }
 
 	tallyMoves() {
 		// TODO: Change to map

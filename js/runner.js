@@ -15,7 +15,12 @@ class Runner {
     this.tallyBoard = tallyBoard;
     this.voteBoard = voteBoard;
 		this.inputElem = inputElem;
+    this.users = [];
 	}
+
+  addUser(user) {
+    this.users.push(user);
+  }
 
 	run() {
 		// TODO: add validator
