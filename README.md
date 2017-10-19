@@ -19,7 +19,7 @@ the first iteration will be focusing more on the client facing part. this means 
 
 :white_check_mark: tally board
 
-:white_medium_square: vote board
+:white_check_mark: vote board
 
 :white_medium_square: settings > number of votes per round
 

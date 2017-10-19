@@ -16,7 +16,7 @@ class ChatScreen {
 		}
 	}
 
-	createEntry(message, name = 'anon', picURL = 'assets/luxSquare.png') {
+	createEntry(message, name = 'anon', picURL = 'assets/images/luxSquare.png') {
 		let chatEntryDiv = document.createElement('div');
 		let chatProfilePicContainer = document.createElement('div');
 		let chatProfilePic = document.createElement('img');

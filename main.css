@@ -1,3 +1,8 @@
+@font-face {
+	font-family: 'PressStart2P';
+	src: url('assets/fonts/codeman38_press-start-2p/PressStart2P.ttf');
+}
+
 canvas { 
 	border: 1px solid black;
 }
@@ -54,10 +59,15 @@ span.chat-entry-message {
 	
 }
 
+.votes-count {
+	font-family: 'PressStart2P';
+}
+
 #votes-list {
 	height: 200px;
 	padding: 10px;
 	overflow-y: hidden;
+	font-family: 'PressStart2P';	
 }
 
 #votes-list:hover {

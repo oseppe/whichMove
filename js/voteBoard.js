@@ -7,6 +7,7 @@ class VoteBoard {
 
   addEntry(vote) {
     this.voteBoardElem.appendChild(this.createEntry(` voted for ${vote}`));
+    this.scrollToLatestEntry();
   }
 
   createEntry(message, name = 'anon') {
