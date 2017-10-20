@@ -12,13 +12,15 @@ class MovesArbiter extends Observable {
 
 	vote(move, user) {
 		this.addMove(move);
-		
+
 		// TODO: should i store state in tallyBoard so that don't need keep calling tallyMoves?
 		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
 
 		if (!this.hasWinner()) return;
 
-		this.notify('winnerChosen', { 'winner': this.winner});
+		this.notify('winnerChosen', { 'tally': this.tallyMoves(), 'winner': this.winner});
+		
+		this.clearMoves();
 	}
 
 	addMove(move) {
@@ -63,9 +65,9 @@ class MovesArbiter extends Observable {
 	hasWinner() {
 		let votes = Object.values(this.tallyMoves());
 
-		let winningCriterion = votes.find( (count) => {return count === 2;});
+		let someoneWon = votes.includes(2);
 
-		return winningCriterion !== undefined;
+		return someoneWon;
 	}
 
 	isCallbackDataValid(data) {

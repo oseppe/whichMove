@@ -10,10 +10,9 @@ class TallyBoard {
 		for(let elem of this.boardElem.children) {
 			let move = this.getAssociatedMove(elem.id);
 			
-			if (!moves.includes(move) || elem.lastElementChild === null) continue;
+			if (!this.moves.includes(move) || elem.firstElementChild === null || elem.lastElementChild === null) continue;
 
 			elem.lastElementChild.innerHTML = 0;
-
 			this.resetIcon(elem.firstElementChild);
 		}
 	}
@@ -27,26 +26,27 @@ class TallyBoard {
 		return move;
 	}
 
-	indicateWinner(elem) {
-		elem.className = 'material-icons orange-darken-4';
+	indicateWinner(winner) {
+		for(let elem of this.boardElem.children) {
+			let move = this.getAssociatedMove(elem.id);
+			
+			if (winner !== move || elem.firstElementChild === null) continue;
+
+			elem.firstElementChild.className = 'material-icons orange-darken-4';;			
+		}
 	}
 
 	resetIcon(elem) {
 		elem.className = 'material-icons teal-darken-2';
 	}
 
-	update(tally, winner = '') {
+	update(tally) {
 		for(let elem of this.boardElem.children) {
 			let move = this.getAssociatedMove(elem.id);
 			
 			if (!tally.hasOwnProperty(move) || elem.lastElementChild === null) continue;
 
 			elem.lastElementChild.innerHTML = tally[move];
-
-			if (!this.hasWinner) return;
-
-			if (move === winner) this.indicateWinner(elem.firstElementChild);
-			else this.resetIcon(elem.firstElementChild);
 		}
 	}
 
@@ -61,5 +61,15 @@ class TallyBoard {
 
 	isVoteCallbackDataValid(data) {
 		return data.hasOwnProperty('tally');
+	}
+
+	movesArbiterWinnerChosenCallback(data) {
+		if(!this.isWinnerChosenCallbackDataValid(data)) return;
+		this.clear();
+		this.indicateWinner(data['winner']);
+	}
+
+	isWinnerChosenCallbackDataValid(data) {
+		return data.hasOwnProperty('tally') && data.hasOwnProperty('winner');
 	}
 }
