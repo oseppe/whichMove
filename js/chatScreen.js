@@ -39,8 +39,9 @@ class ChatScreen {
 
 	notify(event, data) {
 		if (this.subscribableEvents.hasOwnProperty(event)) {
-			for(let listener of this.subscribableEvents[event]) {
-				listener['callback'](listener['caller'], data);
+			for(let callback of this.subscribableEvents[event]) {
+				callback(data);
+				// listener['callback'](listener['caller'], data);
 			}
 		}
 	}
@@ -49,10 +50,11 @@ class ChatScreen {
 		this.screenElem.scrollTop = this.screenElem.scrollHeight - this.screenElem.clientHeight;
 	}
 
-	subscribe(event, caller, callback) {
-		if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback);
+	subscribe(event, callback, context) {
+		if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback.bind(context));
 		else {
-			this.subscribableEvents[event] = [{'caller': caller, 'callback': callback}];
+			// this.subscribableEvents[event] = [{'caller': caller, 'callback': callback}];
+			this.subscribableEvents[event] = [callback.bind(context)];
 		}
 	}
 }

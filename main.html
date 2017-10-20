@@ -148,7 +148,7 @@
                     voteBoard,
 										runnerInputElem);
 
-		chatScreen.subscribe('addEntry', movesArbiter, movesArbiter.chatCallback);
+		chatScreen.subscribe('addEntry', movesArbiter.chatCallback, movesArbiter);
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {

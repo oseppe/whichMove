@@ -53,9 +53,9 @@ class MovesArbiter {
 		// 			lowercaseMessage === 'stay'
 	}
 
-	chatCallback(handler, data) {
-		if (!handler.isCallbackDataValid(data)) return;
-		handler.parseChatMessage(data['message'], data['user']);
+	chatCallback(data) {
+		if (!this.isCallbackDataValid(data)) return;
+		this.parseChatMessage(data['message'], data['user']);
 	}
 
 	isCallbackDataValid(data) {
