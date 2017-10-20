@@ -12,7 +12,9 @@ class MovesArbiter extends Observable {
 
 	vote(move, user) {
 		this.addMove(move);
-		this.notify('vote', { 'vote': move, 'user': user });
+		
+		// TODO: should i store state in tallyBoard so that don't need keep calling tallyMoves?
+		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
 
 		if (!this.hasWinner()) return;
 
