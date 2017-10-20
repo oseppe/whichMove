@@ -1,9 +1,9 @@
 'use strict';
 
-class ChatScreen {
+class ChatScreen extends Observable {
 	constructor(chatScreenElem) {
+		super();
 		this.screenElem = chatScreenElem;
-		this.subscribableEvents = {};
 	}
 
 	addEntry(message, user) {
@@ -37,24 +37,7 @@ class ChatScreen {
 		return chatEntryDiv;
 	}
 
-	notify(event, data) {
-		if (this.subscribableEvents.hasOwnProperty(event)) {
-			for(let callback of this.subscribableEvents[event]) {
-				callback(data);
-				// listener['callback'](listener['caller'], data);
-			}
-		}
-	}
-
 	scrollToLatestEntry() {
 		this.screenElem.scrollTop = this.screenElem.scrollHeight - this.screenElem.clientHeight;
-	}
-
-	subscribe(event, callback, context) {
-		if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback.bind(context));
-		else {
-			// this.subscribableEvents[event] = [{'caller': caller, 'callback': callback}];
-			this.subscribableEvents[event] = [callback.bind(context)];
-		}
 	}
 }

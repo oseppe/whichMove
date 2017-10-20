@@ -1,7 +1,8 @@
 'use strict';
 
-class MovesArbiter {
+class MovesArbiter extends Observable {
 	constructor() {
+		super();
 		this.moves = [];
 		this.subscribableEvents = {};
 	}
@@ -62,14 +63,6 @@ class MovesArbiter {
 		return data.hasOwnProperty('message') && data.hasOwnProperty('message');
 	}
 
-	// notify(event, data) {
-	// 	if (this.subscribableEvents.hasOwnProperty(event)) {
-	// 		for(let callback of this.subscribableEvents[event]) {
-	// 			callback(data);
-	// 		}
-	// 	}
-	// }
-
 	parseChatMessage(message, user) {
 		if (!this.isMove(message)) return;
 
@@ -97,13 +90,6 @@ class MovesArbiter {
 
 		return stringifiedTally;
 	}
-
-	// subscribe(event, callback) {
-	// 	if (this.subscribableEvents.hasOwnProperty(event)) this.subscribableEvents[event].push(callback);
-	// 	else {
-	// 		this.subscribableEvents[event] = [callback];
-	// 	}
-	// }
 
 	tallyMoves() {
 		// TODO: Change to map
