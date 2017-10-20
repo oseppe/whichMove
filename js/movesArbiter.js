@@ -65,7 +65,7 @@ class MovesArbiter extends Observable {
 	hasWinner() {
 		let votes = Object.values(this.tallyMoves());
 
-		let someoneWon = votes.includes(2);
+		let someoneWon = votes.includes(4);
 
 		return someoneWon;
 	}
