@@ -1,7 +1,7 @@
 class User {
 	constructor(name, picUrl) {
 		this.name = name;
-		this.picUrl = picUrl;
+		this._picUrl = picUrl;
 	}
 
 	get name() {
@@ -13,8 +13,7 @@ class User {
 	}
 
 	get picUrl() {
-		return this.picUrl;
+		return this._picUrl;
 	}
-
 	// name colour
 }

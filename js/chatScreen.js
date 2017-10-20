@@ -6,9 +6,10 @@ class ChatScreen extends Observable {
 		this.screenElem = chatScreenElem;
 	}
 
-	addEntry(message, user) {
-		this.screenElem.appendChild(this.createEntry(message));
+	addEntry(message, user = {'name': 'anon', 'picUrl': 'assets/images/luxSquare.png'}) {
+		this.screenElem.appendChild(this.createEntry(message, user['name'], user['picUrl']));
 
+		this.scrollToLatestEntry();
 		this.notify('addEntry', {'message': message, 'user': user});
 	}
 

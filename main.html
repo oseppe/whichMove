@@ -104,14 +104,16 @@
   crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script type="text/javascript" src="js/observable.js"></script>
+	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/chatScreen.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/movesGenerator.js"></script>
+	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
+	<script type="text/javascript" src="js/speechGenerator.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/tallyBoard.js"></script>
-	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/voteBoard.js"></script>
 	<script type="text/javascript">
 		'use strict';
@@ -130,7 +132,7 @@
     const movesArbiter = new MovesArbiter();
 
     const movesGenerator = new MovesGenerator();
-
+    const speechGenerator = new SpeechGenerator();
     const chatScreenElem = document.getElementById('chat-screen');
 		const chatScreen = new ChatScreen(chatScreenElem);
 
@@ -142,14 +144,17 @@
 
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(spriteHandler, 
-										movesArbiter, 
-										movesGenerator,
+										movesArbiter,
 										chatScreen,
                     tallyBoard,
-                    voteBoard,
-										runnerInputElem);
+                    voteBoard);
 
 		chatScreen.subscribe('addEntry', movesArbiter.chatCallback, movesArbiter);
+
+		runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', movesGenerator, speechGenerator));
+		runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', movesGenerator, speechGenerator));
+
+		runner.run();
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {

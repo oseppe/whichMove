@@ -36,22 +36,11 @@ class MovesArbiter extends Observable {
 	isMove(message) {
 		let lowercaseMessage = message.toLowerCase();
 
-		let valid = lowercaseMessage === 'left' ||
+		return lowercaseMessage === 'left' ||
 					lowercaseMessage === 'up' ||
 					lowercaseMessage === 'right' ||
 					lowercaseMessage === 'down' ||
 					lowercaseMessage === 'stay'
-
-		if (valid) console.log('message is a move!');
-		else console.log('not a move boo');
-
-		return valid;
-
-		// return lowercaseMessage === 'left' ||
-		// 			lowercaseMessage === 'up' ||
-		// 			lowercaseMessage === 'right' ||
-		// 			lowercaseMessage === 'down' ||
-		// 			lowercaseMessage === 'stay'
 	}
 
 	chatCallback(data) {
@@ -68,7 +57,7 @@ class MovesArbiter extends Observable {
 
 		this.addMove(message.toLowerCase());
 
-		// this.notify('parseChatMessage', { 'message': message, 'user': user });
+		this.notify('parseChatMessage', { 'message': message, 'user': user });
 	}
 
 	showTally() {
