@@ -70,6 +70,6 @@ class TallyBoard {
 	}
 
 	isWinnerChosenCallbackDataValid(data) {
-		return data.hasOwnProperty('tally') && data.hasOwnProperty('winner');
+		return data.hasOwnProperty('winner');
 	}
 }
