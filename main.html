@@ -62,21 +62,6 @@
 					<!-- chat screen -->
 					<div id="chat-screen" class="">
 					</div>
-					<!-- Run interface -->
-					<div class="row" style="display: none;">
-						<div id="container-runner-input" class="col s12 m12 l12">
-							<input id="runner-input" type="text" name="" placeholder="Run how many times?">
-						</div>
-            <div id="container-runner-settings-btn" class="col s6 m6 l6 valign-wrapper" >
-              <i id="btn-runner-settings" class="material-icons md-24 teal-darken-2">settings</i>
-            </div>
-						<div id="container-runner-send-btn" class="col s6 m6 l6">
-							<button id="runner-run-btn" class="btn waves-effect" type="submit" name="action">
-			    			RUN
-			  			</button>
-			  			<!--  -->
-						</div>
-					</div>
 					<!-- Chat Interface -->
 					<div class="row">
 						<div id="container-chat-input" class="col s12 m12 l12">
@@ -131,8 +116,6 @@
 
     const movesArbiter = new MovesArbiter();
 
-    const movesGenerator = new MovesGenerator();
-    const speechGenerator = new SpeechGenerator();
     const chatScreenElem = document.getElementById('chat-screen');
 		const chatScreen = new ChatScreen(chatScreenElem);
 
@@ -142,14 +125,14 @@
     const voteBoardElem = document.getElementById('votes-list');
     const voteBoard = new VoteBoard(voteBoardElem);
 
-		const runnerInputElem = document.getElementById('runner-input');
-		const runner = new Runner(spriteHandler, 
-										movesArbiter,
-										chatScreen,
-                    tallyBoard,
-                    voteBoard);
-
 		chatScreen.subscribe('addEntry', movesArbiter.chatCallback, movesArbiter);
+		movesArbiter.subscribe('vote', voteBoard.movesArbiterVoteCallback, voteBoard);
+
+		const runnerInputElem = document.getElementById('runner-input');
+		const runner = new Runner(chatScreen);
+
+		const movesGenerator = new MovesGenerator();
+    const speechGenerator = new SpeechGenerator();
 
 		runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', movesGenerator, speechGenerator));
 		runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', movesGenerator, speechGenerator));
@@ -167,17 +150,7 @@
 			let message = chatBox.value;
 
 			chatScreen.addEntry(message);
-			chatScreen.scrollToLatestEntry();
-			spriteHandler.move(message);
 			chatBox.value = '';
-		}
-
-		const runRunner = () => runner.run();
-			
-		const runRunnerUsingEnterKey = (event) => {
-			if(event.keyCode == 13) {
-				runRunner();
-			}	
 		}
 
 		draw();
@@ -186,10 +159,6 @@
 		// Chat related events
 		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
 		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
-
-		// Runner related events
-		document.getElementById('runner-run-btn').addEventListener('click', runRunner);
-		document.getElementById('runner-input').addEventListener('keypress', runRunnerUsingEnterKey);
 
 		// Functions
 		function draw() {

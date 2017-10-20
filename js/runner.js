@@ -1,16 +1,8 @@
 'use strict';
 
 class Runner {
-	constructor(figureHandler, 
-							movesArbiter, 
-							chatScreen,
-              tallyBoard,
-              voteBoard) {
-		this.figureHandler = figureHandler;
-		this.movesArbiter = movesArbiter;
+	constructor(chatScreen) {
 		this.chatScreen = chatScreen;
-    this.tallyBoard = tallyBoard;
-    this.voteBoard = voteBoard;
     this.users = [];
 	}
 

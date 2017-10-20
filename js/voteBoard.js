@@ -5,8 +5,8 @@ class VoteBoard {
     this.voteBoardElem = voteBoardElem;
   }
 
-  addEntry(vote) {
-    this.voteBoardElem.appendChild(this.createEntry(` voted for ${vote}`));
+  addEntry(vote, name = 'anon') {
+    this.voteBoardElem.appendChild(this.createEntry(` voted for ${vote}`, name));
     this.scrollToLatestEntry();
   }
 
@@ -26,5 +26,15 @@ class VoteBoard {
 
   scrollToLatestEntry() {
     this.voteBoardElem.scrollTop = this.voteBoardElem.scrollHeight - this.voteBoardElem.clientHeight;
+  }
+
+  movesArbiterVoteCallback(data) {
+    if (!this.isCallbackDataValid(data)) return;
+    this.addEntry(data['vote'], data['user']['name']);
+
+  }
+
+  isCallbackDataValid(data) {
+    return data.hasOwnProperty('vote') && data.hasOwnProperty('user');
   }
 }

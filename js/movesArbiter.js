@@ -4,11 +4,19 @@ class MovesArbiter extends Observable {
 	constructor() {
 		super();
 		this.moves = [];
-		this.subscribableEvents = {};
 	}
 
 	clearMoves() {
 		this.moves = [];
+	}
+
+	vote(move, user) {
+		this.addMove(move);
+		this.notify('vote', { 'vote': move, 'user': user });
+
+		if (!this.hasWinner()) return;
+
+		this.notify('winnerChosen', { 'winner': this.winner});
 	}
 
 	addMove(move) {
@@ -16,6 +24,8 @@ class MovesArbiter extends Observable {
 	}
 
 	get winner() {
+		if (!this.hasWinner()) return 'no winner yet';
+
 		let tally = this.tallyMoves();
 
 		let winner = '';
@@ -48,16 +58,22 @@ class MovesArbiter extends Observable {
 		this.parseChatMessage(data['message'], data['user']);
 	}
 
+	hasWinner() {
+		let votes = Object.values(this.tallyMoves());
+
+		let winningCriterion = votes.find( (count) => {return count === 2;});
+
+		return winningCriterion !== undefined;
+	}
+
 	isCallbackDataValid(data) {
-		return data.hasOwnProperty('message') && data.hasOwnProperty('message');
+		return data.hasOwnProperty('message') && data.hasOwnProperty('user');
 	}
 
 	parseChatMessage(message, user) {
 		if (!this.isMove(message)) return;
 
-		this.addMove(message.toLowerCase());
-
-		this.notify('parseChatMessage', { 'message': message, 'user': user });
+		this.vote(message.toLowerCase(), user);
 	}
 
 	showTally() {
