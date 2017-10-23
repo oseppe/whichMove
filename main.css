@@ -55,6 +55,15 @@ span.chat-entry-message {
 	color: #e65100;
 }
 
+#mode-indicator-container {
+	padding-top: 5px;
+}
+
+#mode-indicator-content {
+	font-family: 'PressStart2P';
+	font-size: 10px;
+}
+
 #pane-left {
 	
 }
