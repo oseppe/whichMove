@@ -21,6 +21,12 @@ the first iteration will be focusing more on the client facing part. this means 
 
 :white_check_mark: vote board
 
+:white_check_mark: mode indicator
+
+:white_check_mark: user can set mode how winner is declared
+
+:white_medium_square: properly handle equal votes in mode: declare after set time
+
 :white_medium_square: make it 1 user = 1 vote;
 
 :white_medium_square: change way winner is shown

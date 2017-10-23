@@ -154,6 +154,7 @@
 		movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
 
 		settings.subscribe('winModeChanged', modeIndicator.settingsWinModeChangedCallback, modeIndicator);
+		settings.subscribe('winModeChanged', movesArbiter.settingsWinModeChangedCallback, movesArbiter)
 
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(chatScreen);

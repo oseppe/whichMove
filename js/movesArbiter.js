@@ -4,19 +4,18 @@ class MovesArbiter extends Observable {
 	constructor() {
 		super();
 		this.moves = [];
-		this.currentMode = 'first past the post';
+		this.currentMode = 0;
 		this.timerId = '';
 	}
 
 	get currentMode() {
-		if (this._currentMode === 0) return 'first past the post';
-		else if (this._currentMode === 1) return 'most votes after set time';
+		return this._currentMode;
 	}
 
 	set currentMode(value) {
 		this.reset();
 
-		if (value === 'most votes after set time') {
+		if (value === 1) {
 			this._currentMode = 1;
 			this.declareWinnerRegularly();
 		}
@@ -28,7 +27,7 @@ class MovesArbiter extends Observable {
 	}
 
 	chatCallback(data) {
-		if (!this.isCallbackDataValid(data)) return;
+		if (!this.isChatCallbackDataValid(data)) return;
 		this.parseChatMessage(data['message'], data['user']);
 	}
 
@@ -36,12 +35,38 @@ class MovesArbiter extends Observable {
 		this.moves = [];
 	}
 
+	declareWinner() {
+		let tally = this.tallyMoves();
+
+		let winner = '';
+		let count = 0;
+
+		// TODO: how to handle equals
+		for (let move in tally) {
+			
+			if (tally[move] < count) continue;
+			
+			count = tally[move];
+			winner = move;
+		}
+
+		this.notify('declareWinner', { 'winner': winner });
+
+		this.clearMoves();
+	}
+
 	declareWinnerRegularly() {
 		this.timerId = setInterval(() => this.declareWinner(), 7000);
 	}
 
-	isCallbackDataValid(data) {
+	isChatCallbackDataValid(data) {
 		return data.hasOwnProperty('message') && data.hasOwnProperty('user');
+	}
+
+	isFirstPastPostWinnerConditionsMet() {
+		let votes = Object.values(this.tallyMoves());
+
+		return votes.includes(4);
 	}
 
 	isMove(message) {
@@ -56,6 +81,10 @@ class MovesArbiter extends Observable {
 
 	isModeFirstPastPost() {
 		return this._currentMode === 0;
+	}
+
+	isSettingsWinModeChangedCallbackDataValid(data) {
+		return data.hasOwnProperty('winMode');
 	}
 
 	parseChatMessage(message, user) {
@@ -73,6 +102,13 @@ class MovesArbiter extends Observable {
 		}
 
 		this.notify('reset', {});
+	}
+
+	settingsWinModeChangedCallback(data) {
+		if (!this.isSettingsWinModeChangedCallbackDataValid(data)) return;
+		if (this.currentMode === data['winMode']) return;
+
+		this.currentMode = data['winMode'];
 	}
 
 	showTally() {
@@ -109,31 +145,5 @@ class MovesArbiter extends Observable {
 		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
 
 		if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) this.declareWinner();
-	}
-
-	declareWinner() {
-		let tally = this.tallyMoves();
-
-		let winner = '';
-		let count = 0;
-
-		// TODO: how to handle equals
-		for (let move in tally) {
-			
-			if (tally[move] < count) continue;
-			
-			count = tally[move];
-			winner = move;
-		}
-
-		this.notify('declareWinner', { 'winner': winner });
-
-		this.clearMoves();
-	}
-
-	isFirstPastPostWinnerConditionsMet() {
-		let votes = Object.values(this.tallyMoves());
-
-		return votes.includes(4);
 	}
 }
