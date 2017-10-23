@@ -14,10 +14,13 @@ class MovesArbiter extends Observable {
 	}
 
 	set currentMode(value) {
-		if (value === 'most votes after set time') this._currentMode = 1;
-		else this._currentMode = 0;
-
 		this.reset();
+
+		if (value === 'most votes after set time') {
+			this._currentMode = 1;
+			this.declareWinnerRegularly();
+		}
+		else this._currentMode = 0;
 	}
 
 	addMove(move) {
@@ -31,6 +34,10 @@ class MovesArbiter extends Observable {
 
 	clearMoves() {
 		this.moves = [];
+	}
+
+	declareWinnerRegularly() {
+		this.timerId = setInterval(() => this.declareWinner(), 7000);
 	}
 
 	isCallbackDataValid(data) {
@@ -59,6 +66,11 @@ class MovesArbiter extends Observable {
 
 	reset() {
 		this.clearMoves();
+
+		if (this.timerId !== '') {
+			clearInterval(this.timerId);
+			this.timerId = '';
+		}
 
 		this.notify('reset', {});
 	}
