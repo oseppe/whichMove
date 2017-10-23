@@ -72,4 +72,8 @@ class TallyBoard {
 	isDeclareWinnerCallbackDataValid(data) {
 		return data.hasOwnProperty('winner');
 	}
+
+	movesArbiterResetCallback(data) {
+		this.clear();
+	}
 }

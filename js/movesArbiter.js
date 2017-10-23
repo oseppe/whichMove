@@ -4,6 +4,7 @@ class MovesArbiter extends Observable {
 	constructor() {
 		super();
 		this.moves = [];
+		this.currentMode = 'first past the post';
 	}
 
 	clearMoves() {
@@ -25,6 +26,18 @@ class MovesArbiter extends Observable {
 
 	addMove(move) {
 		this.moves.push(move);
+	}
+
+	get currentMode() {
+		if (this._currentMode === 0) return 'first past the post';
+		else if (this._currentMode === 1) return 'most votes after set time';
+	}
+
+	set currentMode(value) {
+		if (value === 'most votes after set time') this._currentMode = 1;
+		else this._currentMode = 0;
+
+		this.reset();
 	}
 
 	get winner() {
@@ -80,24 +93,18 @@ class MovesArbiter extends Observable {
 		this.vote(message.toLowerCase(), user);
 	}
 
+	reset() {
+		this.clearMoves();
+
+		this.notify('reset', {});
+	}
+
 	showTally() {
 		let tally = this.tallyMoves();
 
 		for (let i in tally) {
 			console.log(`${i}: ${tally[i]}`);
 		}
-	}
-
-	stringifyTally() {
-		let tally = this.tallyMoves();
-		let stringifiedTally = '';
-
-		for (let i in tally) {
-			if (tally[i] > 1) stringifiedTally = stringifiedTally + `${i}: ${tally[i]} votes | `;
-			else stringifiedTally = stringifiedTally + `${i}: ${tally[i]} vote | `;
-		}				
-
-		return stringifiedTally;
 	}
 
 	tallyMoves() {

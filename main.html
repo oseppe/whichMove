@@ -125,6 +125,7 @@
 		movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
 		movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);
 		movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
+		movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
 
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(chatScreen);
