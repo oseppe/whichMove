@@ -5,27 +5,7 @@ class MovesArbiter extends Observable {
 		super();
 		this.moves = [];
 		this.currentMode = 'first past the post';
-	}
-
-	clearMoves() {
-		this.moves = [];
-	}
-
-	vote(move, user) {
-		this.addMove(move);
-
-		// TODO: should i store state in tallyBoard so that don't need keep calling tallyMoves?
-		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
-
-		if (!this.hasWinner()) return;
-
-		this.notify('declareWinner', { 'winner': this.winner });
-
-		this.clearMoves();
-	}
-
-	addMove(move) {
-		this.moves.push(move);
+		this.timerId = '';
 	}
 
 	get currentMode() {
@@ -40,24 +20,21 @@ class MovesArbiter extends Observable {
 		this.reset();
 	}
 
-	get winner() {
-		if (!this.hasWinner()) return 'no winner yet';
+	addMove(move) {
+		this.moves.push(move);
+	}
 
-		let tally = this.tallyMoves();
+	chatCallback(data) {
+		if (!this.isCallbackDataValid(data)) return;
+		this.parseChatMessage(data['message'], data['user']);
+	}
 
-		let winner = '';
-		let count = 0;
+	clearMoves() {
+		this.moves = [];
+	}
 
-		// TODO: how to handle equals
-		for (let move in tally) {
-			
-			if (tally[move] < count) continue;
-			
-			count = tally[move];
-			winner = move;
-		}
-
-		return winner;
+	isCallbackDataValid(data) {
+		return data.hasOwnProperty('message') && data.hasOwnProperty('user');
 	}
 
 	isMove(message) {
@@ -70,21 +47,8 @@ class MovesArbiter extends Observable {
 					lowercaseMessage === 'stay'
 	}
 
-	chatCallback(data) {
-		if (!this.isCallbackDataValid(data)) return;
-		this.parseChatMessage(data['message'], data['user']);
-	}
-
-	hasWinner() {
-		let votes = Object.values(this.tallyMoves());
-
-		let someoneWon = votes.includes(4);
-
-		return someoneWon;
-	}
-
-	isCallbackDataValid(data) {
-		return data.hasOwnProperty('message') && data.hasOwnProperty('user');
+	isModeFirstPastPost() {
+		return this._currentMode === 0;
 	}
 
 	parseChatMessage(message, user) {
@@ -124,5 +88,40 @@ class MovesArbiter extends Observable {
 		}
 
 		return tally;
+	}
+
+	vote(move, user) {
+		this.addMove(move);
+
+		// TODO: should i store state in tallyBoard so that don't need keep calling tallyMoves?
+		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
+
+		if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) this.declareWinner();
+	}
+
+	declareWinner() {
+		let tally = this.tallyMoves();
+
+		let winner = '';
+		let count = 0;
+
+		// TODO: how to handle equals
+		for (let move in tally) {
+			
+			if (tally[move] < count) continue;
+			
+			count = tally[move];
+			winner = move;
+		}
+
+		this.notify('declareWinner', { 'winner': winner });
+
+		this.clearMoves();
+	}
+
+	isFirstPastPostWinnerConditionsMet() {
+		let votes = Object.values(this.tallyMoves());
+
+		return votes.includes(4);
 	}
 }

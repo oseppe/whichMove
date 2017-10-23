@@ -50,10 +50,6 @@ class TallyBoard {
 		}
 	}
 
-	hasWinner(winner) {
-		return winner !== '' && winner !== null && winner !== undefined;
-	}
-
 	movesArbiterVoteCallback(data) {
 		if(!this.isVoteCallbackDataValid(data)) return;
 		this.update(data['tally']);
