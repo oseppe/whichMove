@@ -18,7 +18,7 @@ class MovesArbiter extends Observable {
 
 		if (!this.hasWinner()) return;
 
-		this.notify('winnerChosen', { 'winner': this.winner });
+		this.notify('declareWinner', { 'winner': this.winner });
 
 		this.clearMoves();
 	}

@@ -26,12 +26,12 @@ class SpriteHandler {
 		}
 	}
 
-	movesArbiterWinnerChosenCallback(data) {
-		if(!this.isWinnerChosenCallbackDataValid(data)) return;
+	movesArbiterDeclareWinnerCallback(data) {
+		if(!this.isDeclareWinnerCallbackDataValid(data)) return;
 		this.move(data['winner']);
 	}
 
-	isWinnerChosenCallbackDataValid(data) {
+	isDeclareWinnerCallbackDataValid(data) {
 		return data.hasOwnProperty('winner');
 	}
 }

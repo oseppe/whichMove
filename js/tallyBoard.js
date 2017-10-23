@@ -63,13 +63,13 @@ class TallyBoard {
 		return data.hasOwnProperty('tally');
 	}
 
-	movesArbiterWinnerChosenCallback(data) {
-		if(!this.isWinnerChosenCallbackDataValid(data)) return;
+	movesArbiterDeclareWinnerCallback(data) {
+		if(!this.isDeclareWinnerCallbackDataValid(data)) return;
 		this.clear();
 		this.indicateWinner(data['winner']);
 	}
 
-	isWinnerChosenCallbackDataValid(data) {
+	isDeclareWinnerCallbackDataValid(data) {
 		return data.hasOwnProperty('winner');
 	}
 }

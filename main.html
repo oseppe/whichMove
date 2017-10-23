@@ -123,8 +123,8 @@
 		chatScreen.subscribe('addEntry', movesArbiter.chatCallback, movesArbiter);
 		movesArbiter.subscribe('vote', voteBoard.movesArbiterVoteCallback, voteBoard);
 		movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
-		movesArbiter.subscribe('winnerChosen', tallyBoard.movesArbiterWinnerChosenCallback, tallyBoard);
-		movesArbiter.subscribe('winnerChosen', spriteHandler.movesArbiterWinnerChosenCallback, spriteHandler);
+		movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);
+		movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
 
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(chatScreen);
