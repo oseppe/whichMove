@@ -1,8 +1,8 @@
 class Rando extends User {
-	constructor(name, picUrl, movesGenerator, speechGenerator) {
+	constructor(name, picUrl, sayMove, sayLine) {
 		super(name, picUrl);
-		this.movesGenerator = movesGenerator;
-		this.speechGenerator = speechGenerator;
+		this.sayMove = sayMove;
+		this.sayLine = sayLine;
 	}
 
 	chat() {
@@ -10,11 +10,11 @@ class Rando extends User {
 	}
 
 	getVote() {
-		return this.movesGenerator.stringifiedMove;
+		return this.sayMove();
 	}
 
 	getLine() {
-		return this.speechGenerator.line;
+		return this.sayLine();
 	}
 	
 	shouldVote() {

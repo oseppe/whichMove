@@ -103,13 +103,12 @@
 	<script type="text/javascript" src="js/observable.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/chatScreen.js"></script>
+	<script type="text/javascript" src="js/chatLines.js"></script>
 	<script type="text/javascript" src="js/modeIndicator.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
-	<script type="text/javascript" src="js/movesGenerator.js"></script>
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/settings.js"></script>
-	<script type="text/javascript" src="js/speechGenerator.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/tallyBoard.js"></script>
@@ -159,13 +158,10 @@
 		const runnerInputElem = document.getElementById('runner-input');
 		const runner = new Runner(chatScreen);
 
-		const movesGenerator = new MovesGenerator();
-    const speechGenerator = new SpeechGenerator();
-
-		runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', movesGenerator, speechGenerator));
-		runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', movesGenerator, speechGenerator));
-		runner.addUser(new Rando('clip', 'assets/images/mysticLuxSquare.png', movesGenerator, speechGenerator));
-		runner.addUser(new Rando('cord', 'assets/images/natureLuxSquare.png', movesGenerator, speechGenerator));
+		runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', sayMove, sayRegularLine));
+		runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', sayMove, sayRegularLine));
+		runner.addUser(new Rando('clip', 'assets/images/mysticLuxSquare.png', sayMove, sayRegularLine));
+		runner.addUser(new Rando('cord', 'assets/images/natureLuxSquare.png', sayMove, sayRegularLine));
 
 		runner.run();
 
