@@ -104,12 +104,12 @@
 	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/chatLines.js"></script>
 	<script type="text/javascript" src="js/handleSprite.js"></script>
-	<script type="text/javascript" src="js/modeIndicator.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/showInScreen.js"></script>
 	<script type="text/javascript" src="js/showInTallyBoard.js"></script>
+	<script type="text/javascript" src="js/showWinMode.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript">
 		'use strict';
@@ -146,12 +146,7 @@
     
     eventBus.subscribe('sendChat', showInChatCallback, null);
     eventBus.subscribe('sendChat', movesArbiter.sendChatCallback, movesArbiter);
-
-    // const modeIndicatorElem = document.getElementById('mode-indicator-text');
-    // const modeIndicator = new ModeIndicator(modeIndicatorElem);
-
-    // const settingsWinModeElem = document.getElementsByName('winMode');
-    // const settings = new Settings(settingsWinModeElem);
+    eventBus.subscribe('changeWinMode', indicateWinModeCallback, null);
 
 		// movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
 
@@ -188,6 +183,13 @@
 		// Chat related events
 		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
 		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
+		// Win mode related events
+		document.getElementById('firstPastPost').addEventListener('click', () => {
+			eventBus.notify('changeWinMode', {'winMode': 0});
+		});
+		document.getElementById('mostVotesAfterSetTime').addEventListener('click', () => {
+			eventBus.notify('changeWinMode', {'winMode': 1});
+		});
 	</script>
 </body>
 </html>
