@@ -32,7 +32,7 @@ class MovesArbiter {
 
 	sendChatCallback(data) {
 		if (!this.isSendChatCallbackDataValid(data)) return;
-		this.parseChatMessage(data['message'], data['user']);
+		this.parseChatMessage(data['message'], {'name': data['userName'], 'picUrl': data['userPicUrl']});
 	}
 
 	clearMoves() {
@@ -147,7 +147,8 @@ class MovesArbiter {
 
 		let data = {
 			'message': move, 
-			'user': user,
+			'userName': user['name'],
+			'userPicUrl': user['picUrl'],
 			'tally': this.tallyMoves(),
 			'winner': ''
 		}
