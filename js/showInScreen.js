@@ -1,6 +1,7 @@
 'use strict';
 
 const chatScreenElem = document.getElementById('chat-screen');
+const votesScreenElem = document.getElementById('votes-list');
 
 const createEntryForChat = (message, name = 'anon', picURL = 'assets/images/luxSquare.png') => {
 	let chatEntryDiv = document.createElement('div');
@@ -27,6 +28,20 @@ const createEntryForChat = (message, name = 'anon', picURL = 'assets/images/luxS
 	return chatEntryDiv;
 };
 
+const createEntryForVotes = (message, name = 'anon') => {
+	let voteEntryDiv = document.createElement('div');
+  let voteProfileName = document.createElement('span');
+  let voteEntryMessage = document.createElement('span');
+
+  voteProfileName.innerHTML = name;
+  voteEntryMessage.innerHTML = ` voted for ${message}`;
+
+  voteEntryDiv.appendChild(voteProfileName);
+  voteEntryDiv.appendChild(voteEntryMessage);
+
+  return voteEntryDiv;
+};
+
 const scrollToLatestEntry = (screenElem) => {
 	screenElem.scrollTop = screenElem.scrollHeight - screenElem.clientHeight;
 };
@@ -39,4 +54,8 @@ const addEntryToScreen = (screenElem, createEntry, data) => {
 
 const showInChatCallback = (data) => {
 	addEntryToScreen(chatScreenElem, createEntryForChat, data);
+}
+
+const showInVotesCallback = (data) => {
+	addEntryToScreen(votesScreenElem, createEntryForVotes, data);	
 }

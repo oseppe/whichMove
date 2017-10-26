@@ -109,11 +109,10 @@
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/settings.js"></script>
-	<script type="text/javascript" src="js/showInChatScreen.js"></script>
+	<script type="text/javascript" src="js/showInScreen.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/tallyBoard.js"></script>
-	<script type="text/javascript" src="js/voteBoard.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
@@ -133,12 +132,10 @@
     const eventBus = new EventBus();
     
     eventBus.subscribe('sendChat', showInChatCallback, null);
+    eventBus.subscribe('sendChat', showInVotesCallback, null);
 
     const tallyBoardElem = document.getElementById('votes-tally');
     const tallyBoard = new TallyBoard(tallyBoardElem);
-
-    const voteBoardElem = document.getElementById('votes-list');
-    const voteBoard = new VoteBoard(voteBoardElem);
 
     const modeIndicatorElem = document.getElementById('mode-indicator-text');
     const modeIndicator = new ModeIndicator(modeIndicatorElem);
@@ -146,7 +143,6 @@
     const settingsWinModeElem = document.getElementsByName('winMode');
     const settings = new Settings(settingsWinModeElem);
 
-		// movesArbiter.subscribe('vote', voteBoard.movesArbiterVoteCallback, voteBoard);
 		// movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
 		// movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);
 		// movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
