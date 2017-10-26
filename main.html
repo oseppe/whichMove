@@ -101,14 +101,12 @@
 		
 	</footer>
 	<script type="text/javascript" src="js/eventBus.js"></script>
-	<script type="text/javascript" src="js/observable.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/chatLines.js"></script>
 	<script type="text/javascript" src="js/modeIndicator.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
-	<script type="text/javascript" src="js/settings.js"></script>
 	<script type="text/javascript" src="js/showInScreen.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
@@ -128,20 +126,21 @@
   	const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
 
     const movesArbiter = new MovesArbiter();
+		movesArbiter.addElemUpdater(showInVotesCallback);
 
-    const eventBus = new EventBus();
+    const eventBus = new EventBus(showInVotesCallback);
     
     eventBus.subscribe('sendChat', showInChatCallback, null);
-    eventBus.subscribe('sendChat', showInVotesCallback, null);
+    eventBus.subscribe('sendChat', movesArbiter.sendChatCallback, movesArbiter);
 
     const tallyBoardElem = document.getElementById('votes-tally');
     const tallyBoard = new TallyBoard(tallyBoardElem);
 
-    const modeIndicatorElem = document.getElementById('mode-indicator-text');
-    const modeIndicator = new ModeIndicator(modeIndicatorElem);
+    // const modeIndicatorElem = document.getElementById('mode-indicator-text');
+    // const modeIndicator = new ModeIndicator(modeIndicatorElem);
 
-    const settingsWinModeElem = document.getElementsByName('winMode');
-    const settings = new Settings(settingsWinModeElem);
+    // const settingsWinModeElem = document.getElementsByName('winMode');
+    // const settings = new Settings(settingsWinModeElem);
 
 		// movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
 		// movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);

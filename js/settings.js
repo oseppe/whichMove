@@ -1,4 +1,4 @@
-class Settings extends Observable {
+class Settings {
 	constructor(settingsElem) {
 		super();
 		this.settingsElem = settingsElem;
@@ -16,6 +16,6 @@ class Settings extends Observable {
 	}
 
 	winModeChanged(mode = 0) {
-		this.notify('winModeChanged', {'winMode': mode});
+		// this.notify('winModeChanged', {'winMode': mode});
 	}
 }

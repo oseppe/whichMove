@@ -1,11 +1,11 @@
 'use strict';
 
-class MovesArbiter extends Observable {
+class MovesArbiter {
 	constructor() {
-		super();
 		this.moves = [];
 		this.currentMode = 0;
 		this.timerId = '';
+		this.elemUpdaters = [];
 	}
 
 	get currentMode() {
@@ -26,8 +26,12 @@ class MovesArbiter extends Observable {
 		this.moves.push(move);
 	}
 
-	chatCallback(data) {
-		if (!this.isChatCallbackDataValid(data)) return;
+	addElemUpdater(elemUpdater) {
+		this.elemUpdaters.push(elemUpdater);
+	}
+
+	sendChatCallback(data) {
+		if (!this.isSendChatCallbackDataValid(data)) return;
 		this.parseChatMessage(data['message'], data['user']);
 	}
 
@@ -50,7 +54,7 @@ class MovesArbiter extends Observable {
 			winner = move;
 		}
 
-		this.notify('declareWinner', { 'winner': winner });
+		// this.notify('declareWinner', { 'winner': winner });
 
 		this.clearMoves();
 	}
@@ -59,8 +63,8 @@ class MovesArbiter extends Observable {
 		this.timerId = setInterval(() => this.declareWinner(), 7000);
 	}
 
-	isChatCallbackDataValid(data) {
-		return data.hasOwnProperty('message') && data.hasOwnProperty('user');
+	isSendChatCallbackDataValid(data) {
+		return data.hasOwnProperty('message');
 	}
 
 	isFirstPastPostWinnerConditionsMet() {
@@ -101,7 +105,7 @@ class MovesArbiter extends Observable {
 			this.timerId = '';
 		}
 
-		this.notify('reset', {});
+		// this.notify('reset', {});
 	}
 
 	settingsWinModeChangedCallback(data) {
@@ -141,9 +145,12 @@ class MovesArbiter extends Observable {
 	vote(move, user) {
 		this.addMove(move);
 
-		// TODO: should i store state in tallyBoard so that don't need keep calling tallyMoves?
-		this.notify('vote', { 'vote': move, 'user': user, 'tally': this.tallyMoves() });
+		this.runElemUpdaters({'message': move, 'user': user, 'tally': this.tallyMoves()});
 
-		if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) this.declareWinner();
+		// if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) this.declareWinner();
+	}
+
+	runElemUpdaters(data) {
+		this.elemUpdaters.map( (elemUpdater) => elemUpdater(data) );
 	}
 }
