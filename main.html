@@ -100,15 +100,16 @@
 	<footer>
 		
 	</footer>
+	<script type="text/javascript" src="js/eventBus.js"></script>
 	<script type="text/javascript" src="js/observable.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
-	<script type="text/javascript" src="js/chatScreen.js"></script>
 	<script type="text/javascript" src="js/chatLines.js"></script>
 	<script type="text/javascript" src="js/modeIndicator.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/settings.js"></script>
+	<script type="text/javascript" src="js/showInChatScreen.js"></script>
 	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/tallyBoard.js"></script>
@@ -129,8 +130,9 @@
 
     const movesArbiter = new MovesArbiter();
 
-    const chatScreenElem = document.getElementById('chat-screen');
-		const chatScreen = new ChatScreen(chatScreenElem);
+    const eventBus = new EventBus();
+    
+    eventBus.subscribe('sendChat', showInChatCallback, null);
 
     const tallyBoardElem = document.getElementById('votes-tally');
     const tallyBoard = new TallyBoard(tallyBoardElem);
@@ -144,26 +146,24 @@
     const settingsWinModeElem = document.getElementsByName('winMode');
     const settings = new Settings(settingsWinModeElem);
 
-		chatScreen.subscribe('addEntry', movesArbiter.chatCallback, movesArbiter);
-		
-		movesArbiter.subscribe('vote', voteBoard.movesArbiterVoteCallback, voteBoard);
-		movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
-		movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);
-		movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
-		movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
+		// movesArbiter.subscribe('vote', voteBoard.movesArbiterVoteCallback, voteBoard);
+		// movesArbiter.subscribe('vote', tallyBoard.movesArbiterVoteCallback, tallyBoard);
+		// movesArbiter.subscribe('declareWinner', tallyBoard.movesArbiterDeclareWinnerCallback, tallyBoard);
+		// movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
+		// movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
 
-		settings.subscribe('winModeChanged', modeIndicator.settingsWinModeChangedCallback, modeIndicator);
-		settings.subscribe('winModeChanged', movesArbiter.settingsWinModeChangedCallback, movesArbiter)
+		// settings.subscribe('winModeChanged', modeIndicator.settingsWinModeChangedCallback, modeIndicator);
+		// settings.subscribe('winModeChanged', movesArbiter.settingsWinModeChangedCallback, movesArbiter)
 
-		const runnerInputElem = document.getElementById('runner-input');
-		const runner = new Runner(chatScreen);
+		// const runnerInputElem = document.getElementById('runner-input');
+		// const runner = new Runner(chatScreen);
 
-		runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', sayMove, sayRegularLine));
-		runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', sayMove, sayRegularLine));
-		runner.addUser(new Rando('clip', 'assets/images/mysticLuxSquare.png', sayMove, sayRegularLine));
-		runner.addUser(new Rando('cord', 'assets/images/natureLuxSquare.png', sayMove, sayRegularLine));
+		// runner.addUser(new Rando('pen', 'assets/images/fireLuxSquare.png', sayMove, sayRegularLine));
+		// runner.addUser(new Rando('paper', 'assets/images/stormLuxSquare.png', sayMove, sayRegularLine));
+		// runner.addUser(new Rando('clip', 'assets/images/mysticLuxSquare.png', sayMove, sayRegularLine));
+		// runner.addUser(new Rando('cord', 'assets/images/natureLuxSquare.png', sayMove, sayRegularLine));
 
-		runner.run();
+		// runner.run();
 
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {
@@ -175,7 +175,7 @@
 			let chatBox = document.getElementById('chat-input');
 			let message = chatBox.value;
 
-			chatScreen.addEntry(message);
+			eventBus.notify('sendChat', {'message': message});
 			chatBox.value = '';
 		}
 
