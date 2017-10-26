@@ -103,31 +103,44 @@
 	<script type="text/javascript" src="js/eventBus.js"></script>
 	<script type="text/javascript" src="js/user.js"></script>
 	<script type="text/javascript" src="js/chatLines.js"></script>
+	<script type="text/javascript" src="js/handleSprite.js"></script>
 	<script type="text/javascript" src="js/modeIndicator.js"></script>
 	<script type="text/javascript" src="js/movesArbiter.js"></script>
 	<script type="text/javascript" src="js/rando.js"></script>
 	<script type="text/javascript" src="js/runner.js"></script>
 	<script type="text/javascript" src="js/showInScreen.js"></script>
-	<script type="text/javascript" src="js/sprite.js"></script>
-	<script type="text/javascript" src="js/spriteHandler.js"></script>
 	<script type="text/javascript" src="js/showInTallyBoard.js"></script>
+	<script type="text/javascript" src="js/sprite.js"></script>
 	<script type="text/javascript">
 		'use strict';
 
 		let canvas = document.getElementById('canvas');
 
-		let spriteHeight = 20;
-		let spriteWidth = 20;
-		let startY = computeCenter(canvas.height, spriteHeight);
-		let startX = computeCenter(canvas.width, spriteWidth);
-		
-		const sprite = new Sprite(startX, startY, spriteWidth, spriteHeight);
+		const draw = () => {
+			if (canvas.getContext) {
+			    let context = canvas.getContext('2d');
 
-  	const spriteHandler = new SpriteHandler(sprite, canvas.width, canvas.height);
+			    context.clearRect(0,0, canvas.width, canvas.height);
+
+			    sprite.flicker().draw(context);
+
+			    window.requestAnimationFrame(draw);
+			  }
+		}
+
+		const computeCenter = (canvasLength, figureLength) => {
+		  return (canvasLength / 2) - (figureLength / 2);
+		}
+
+		let startY = computeCenter(canvas.height, 20);
+		let startX = computeCenter(canvas.width, 20);
+
+		const sprite = new Sprite(startX, startY, 20, 20);
 
     const movesArbiter = new MovesArbiter();
 		movesArbiter.addElemUpdater(showInVotesCallback);
 		movesArbiter.addElemUpdater(showInTallyBoardCallback);
+		movesArbiter.addElemUpdater(moveSpriteCallback);
 
     const eventBus = new EventBus(showInVotesCallback);
     
@@ -140,7 +153,6 @@
     // const settingsWinModeElem = document.getElementsByName('winMode');
     // const settings = new Settings(settingsWinModeElem);
 
-		// movesArbiter.subscribe('declareWinner', spriteHandler.movesArbiterDeclareWinnerCallback, spriteHandler);
 		// movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
 
 		// settings.subscribe('winModeChanged', modeIndicator.settingsWinModeChangedCallback, modeIndicator);
@@ -156,6 +168,8 @@
 
 		// runner.run();
 
+		draw();
+
 		const sendChatUsingEnterKey = (event) => {
 			if (event.keyCode == 13) {
 				sendChat();
@@ -170,30 +184,10 @@
 			chatBox.value = '';
 		}
 
-		draw();
-
 		// Register events
 		// Chat related events
 		document.getElementById('chat-send-btn').addEventListener('click', sendChat);
 		document.getElementById('chat-input').addEventListener('keypress', sendChatUsingEnterKey);
-
-		// Functions
-		function draw() {
-	      
-      if (canvas.getContext) {
-        let context = canvas.getContext('2d');
-
-        context.clearRect(0,0, canvas.width, canvas.height);
-
-        sprite.flicker().draw(context);
-
-        window.requestAnimationFrame(draw);
-      }
-    }
-
-    function computeCenter(canvasLength, figureLength) {
-      return (canvasLength / 2) - (figureLength / 2);
-    }
 	</script>
 </body>
 </html>
