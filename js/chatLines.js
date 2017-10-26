@@ -30,11 +30,12 @@ const regularLines = [
 	"To be fluid is to adapt"
 ];
 
+const getRandomNumberBetween = (min, max) => {
+	return Math.floor(Math.random() * (max - min + 1)) + min;	
+}
+
 const getLine = (lines) => {
-	let min = 0;
-	let max = lines.length - 1;
-	
-	let index = Math.floor(Math.random() * (max - min + 1)) + min;
+	let index = getRandomNumberBetween(0, (lines.length - 1));
 
 	return lines[index];
 };
@@ -46,3 +47,21 @@ const sayMove = () => {
 const sayRegularLine = () => {
 	return getLine(regularLines);
 }
+
+const chat = () => {
+	return (getRandomNumberBetween(1, 4) === 1) ? sayRegularLine() : sayMove();
+}
+
+const randos = [
+	{'userName': 'pen', 'userPicUrl': 'assets/images/fireLuxSquare.png'},
+	{'userName': 'paper', 'userPicUrl': 'assets/images/stormLuxSquare.png'},
+	{'userName': 'clip',  'userPicUrl': 'assets/images/mysticLuxSquare.png'},
+	{'userName': 'cord',  'userPicUrl': 'assets/images/natureLuxSquare.png'},
+];
+
+const randomChattingId = setInterval( () => {
+		randos.map((user) => {
+			eventBus.notify('sendChat', {'message': chat(), 'userName': user['userName'], 'userPicUrl': user['userPicUrl']});
+		});
+	}
+	, 5000);
