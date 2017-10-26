@@ -13,17 +13,39 @@ const getAssociatedMove = (elemId) => {
 	return move;
 };
 
-// TODO: target for compose
-const updateTallyBoard = (boardElem, tally) => {
-		for(let elem of boardElem.children) {
-			let move = getAssociatedMove(elem.id);
-			
-			if (!tally.hasOwnProperty(move) || elem.lastElementChild === null) continue;
-
-			elem.lastElementChild.innerHTML = tally[move];
-		}
+const resetTallyBoardEntry = (elem) => {
+	elem.firstElementChild.className = 'material-icons teal-darken-2';
+	elem.lastElementChild.innerHTML = 0;
 };
 
+// TODO: target for compose
+const indicateWinner = (boardElem, winner) => {
+	for(let elem of boardElem.children) {
+
+		if (elem.firstElementChild === null || elem.lastElementChild === null) continue;
+
+		let move = getAssociatedMove(elem.id);
+
+		resetTallyBoardEntry(elem);
+
+		if (winner !== move) continue;
+
+		elem.firstElementChild.className = 'material-icons orange-darken-4';;
+	}
+}
+
+// TODO: target for compose
+const updateTallyBoard = (boardElem, tally) => {
+	for(let elem of boardElem.children) {
+		let move = getAssociatedMove(elem.id);
+		
+		if (!tally.hasOwnProperty(move) || elem.lastElementChild === null) continue;
+
+		elem.lastElementChild.innerHTML = tally[move];
+	}
+};
+
+// TODO: needs validation for data['winner']
 const showInTallyBoardCallback = (data) => {
-	updateTallyBoard(tallyBoardElem, data['tally']);
+	(data['winner'] === '') ? updateTallyBoard(tallyBoardElem, data['tally']) : indicateWinner(tallyBoardElem, data['winner']) ;
 }

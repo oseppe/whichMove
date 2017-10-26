@@ -54,9 +54,9 @@ class MovesArbiter {
 			winner = move;
 		}
 
-		// this.notify('declareWinner', { 'winner': winner });
-
 		this.clearMoves();
+
+		return winner;
 	}
 
 	declareWinnerRegularly() {
@@ -145,9 +145,16 @@ class MovesArbiter {
 	vote(move, user) {
 		this.addMove(move);
 
-		this.runElemUpdaters({'message': move, 'user': user, 'tally': this.tallyMoves()});
+		let data = {
+			'message': move, 
+			'user': user,
+			'tally': this.tallyMoves(),
+			'winner': ''
+		}
 
-		// if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) this.declareWinner();
+		if (this.isModeFirstPastPost() && this.isFirstPastPostWinnerConditionsMet()) data['winner'] = this.declareWinner();
+
+		this.runElemUpdaters(data);
 	}
 
 	runElemUpdaters(data) {
