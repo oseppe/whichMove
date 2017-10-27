@@ -144,11 +144,7 @@
     eventBus.subscribe('sendChat', showInChatCallback, null);
     eventBus.subscribe('sendChat', movesArbiter.sendChatCallback, movesArbiter);
     eventBus.subscribe('changeWinMode', indicateWinModeCallback, null);
-
-		// movesArbiter.subscribe('reset', tallyBoard.movesArbiterResetCallback, tallyBoard);
-
-		// settings.subscribe('winModeChanged', modeIndicator.settingsWinModeChangedCallback, modeIndicator);
-		// settings.subscribe('winModeChanged', movesArbiter.settingsWinModeChangedCallback, movesArbiter)
+    eventBus.subscribe('changeWinMode', movesArbiter.winModeChangedCallback, movesArbiter);
 
 		draw();
 

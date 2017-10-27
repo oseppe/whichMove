@@ -21,6 +21,6 @@ const moveSprite = (figure, canvasWidth, canvasHeight, direction) => {
 
 // TODO: Remove the if
 const moveSpriteCallback = (data) => {
-	if (data['winner'] === '') return;
+	if ( !data.hasOwnProperty('winner') || data['winner'] === '') return;
 	moveSprite(sprite, canvas.width, canvas.height, data['winner']);
 }    

@@ -57,5 +57,6 @@ const showInChatCallback = (data) => {
 }
 
 const showInVotesCallback = (data) => {
+	if (!data.hasOwnProperty('message')) return;
 	addEntryToScreen(votesScreenElem, createEntryForVotes, data);	
 }

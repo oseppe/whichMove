@@ -3,9 +3,9 @@
 class MovesArbiter {
 	constructor() {
 		this.moves = [];
+		this.elemUpdaters = [];
 		this.currentMode = 0;
 		this.timerId = '';
-		this.elemUpdaters = [];
 	}
 
 	get currentMode() {
@@ -60,7 +60,16 @@ class MovesArbiter {
 	}
 
 	declareWinnerRegularly() {
-		this.timerId = setInterval(() => this.declareWinner(), 7000);
+		this.timerId = setInterval(() => {
+			let winner = this.declareWinner();
+
+			let data = {
+				'winner': winner,
+				'tally': {'left': 0, 'up': 0, 'right': 0, 'down': 0, 'stay': 0}
+			};
+			
+			this.runElemUpdaters(data);
+		}, 7000);
 	}
 
 	isSendChatCallbackDataValid(data) {
@@ -87,10 +96,6 @@ class MovesArbiter {
 		return this._currentMode === 0;
 	}
 
-	isSettingsWinModeChangedCallbackDataValid(data) {
-		return data.hasOwnProperty('winMode');
-	}
-
 	parseChatMessage(message, user) {
 		if (!this.isMove(message)) return;
 
@@ -105,14 +110,19 @@ class MovesArbiter {
 			this.timerId = '';
 		}
 
-		// this.notify('reset', {});
+		let resetData = {'tally': {'left': 0, 'up': 0, 'right': 0, 'down': 0, 'stay': 0}};
+		this.runElemUpdaters(resetData);
 	}
 
-	settingsWinModeChangedCallback(data) {
-		if (!this.isSettingsWinModeChangedCallbackDataValid(data)) return;
+	winModeChangedCallback(data) {
+		if (!this.isWinModeChangedCallbackDataValid(data)) return;
 		if (this.currentMode === data['winMode']) return;
 
 		this.currentMode = data['winMode'];
+	}
+
+	isWinModeChangedCallbackDataValid(data) {
+		return data.hasOwnProperty('winMode');
 	}
 
 	showTally() {

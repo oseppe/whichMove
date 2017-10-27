@@ -47,5 +47,6 @@ const updateTallyBoard = (boardElem, tally) => {
 
 // TODO: needs validation for data['winner']
 const showInTallyBoardCallback = (data) => {
-	(data['winner'] === '') ? updateTallyBoard(tallyBoardElem, data['tally']) : indicateWinner(tallyBoardElem, data['winner']) ;
+	if ( !data.hasOwnProperty('winner') || data['winner'] === '') updateTallyBoard(tallyBoardElem, data['tally']) 
+	else indicateWinner(tallyBoardElem, data['winner']) ;
 }
