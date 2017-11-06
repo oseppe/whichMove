@@ -1,7 +1,5 @@
 import React from 'react'
 
-// displayName = "anon", message = "sample message"
-
 export default function ChatEntry({displayName = "anon", message = "sample message"}) {
 	return (
 		<div style={{"marginBottom": 0}}>
