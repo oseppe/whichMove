@@ -1,8 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Chatscreen from './chatscreen'
+import ChatScreen from './components/chatScreen'
 
 render(
-	<Chatscreen />,
+	<ChatScreen />,
 	document.getElementById('app')
 )
