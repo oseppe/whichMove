@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Component } from 'react'
 
-class VotesTally extends React.Component {
+class VotesTally extends Component {
 	render() {
 		return(
 			<div className="row center-align">

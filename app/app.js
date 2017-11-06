@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { render } from 'react-dom'
-import ChatScreen from './components/chatScreen'
-import GameScreen from './components/gameScreen'
-import VotesTally from './components/votesTally'
+import LeftPane from './components/leftPane'
+import RightPane from './components/rightPane'
 
-class App extends React.Component {
+class App extends Component {
 	render() {
 		return(
-			<div>
-				<GameScreen />
-				<VotesTally />
-				<ChatScreen />
+			<div className="row">
+				<LeftPane />
+				<RightPane />
 			</div>
 		)
 	}
