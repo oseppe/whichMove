@@ -5,7 +5,7 @@ class WinSettingsToggle extends Component {
 		return(
 			<div className="col s12">
 				<p>
-					<input name="winMode" type="radio" id="firstPastPost" value="0" checked />
+					<input name="winMode" type="radio" id="firstPastPost" value="0" defaultChecked />
 					<label htmlFor="firstPastPost">1st to reach 4 votes</label>
 				</p>
 				<p>
