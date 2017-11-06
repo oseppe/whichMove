@@ -1,7 +1,7 @@
 import React from 'react'
-import ChatScreen from './chatScreen'
-import ChatInputGroup from './chatInputGroup/chatInputGroup'
-import WinSettingsGroup from './winSettingsGroup/winSettingsGroup'
+import ChatScreen from '../chatScreen/chatScreen'
+import ChatInputGroup from '../chatInputGroup/chatInputGroup'
+import WinSettingsGroup from '../winSettingsGroup/winSettingsGroup'
 
 export default function RightPane() {
 	return (

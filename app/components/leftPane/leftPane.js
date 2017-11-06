@@ -1,8 +1,8 @@
 import React from 'react'
-import GameScreen from './gameScreen'
-import VotesTally from './votesTally'
-import VotesScreen from './votesScreen'
-import WinModeIndicator from './winModeIndicator'
+import GameScreen from '../gameScreen/gameScreen'
+import VotesTally from '../votesTally/votesTally'
+import VotesScreen from '../votesScreen/votesScreen'
+import WinModeIndicator from '../winModeIndicator/winModeIndicator'
 
 export default function LeftPane() {
 	return (

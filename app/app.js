@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { render } from 'react-dom'
-import LeftPane from './components/leftPane'
-import RightPane from './components/rightPane'
+import LeftPane from './components/leftPane/leftPane'
+import RightPane from './components/rightPane/rightPane'
 
 class App extends Component {
 	render() {
