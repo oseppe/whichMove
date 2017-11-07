@@ -6,7 +6,7 @@ class WinSettingsGroup extends Component {
 		return(
 			<div className="row">
 				<h5>Win Condition</h5>
-				<WinSettingsToggle />
+				<WinSettingsToggle handleWinModeChange={this.props.handleWinModeChange}/>
 			</div>
 		)
 	}
