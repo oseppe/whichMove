@@ -7,7 +7,7 @@ class ChatInputGroup extends Component {
 	render() {
 		return(
 			<div className="row">
-				<ChatInput />
+				<ChatInput handleSendChat={this.props.handleSendChat} />
 				<ChatSettings />
 				<ChatSendButton />
 			</div>

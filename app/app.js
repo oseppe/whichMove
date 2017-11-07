@@ -22,11 +22,15 @@ class App extends Component {
     if(+value < winModeExplanations.length) this.setState({winModeExplanation: winModeExplanations[+value]})
 	}
 
+	handleSendChat(text) {
+		console.log(text);
+	}
+
 	render() {
 		return(
 			<div className="row">
 				<LeftPane winModeExplanation={ this.state.winModeExplanation }/>
-				<RightPane handleWinModeChange={ this.handleWinModeChange }/>
+				<RightPane handleWinModeChange={ this.handleWinModeChange } handleSendChat={ this.handleSendChat } />
 			</div>
 		)
 	}
